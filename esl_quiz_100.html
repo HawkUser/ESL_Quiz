@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Present Simple vs Present Continuous — 100 Questions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap');
+
+  :root {
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --primary: #4361ee;
+    --accent: #f72585;
+    --green: #06d6a0;
+    --red: #ef233c;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--primary); }
+  header p { color: var(--muted); font-weight: 600; margin-top: 4px; }
+
+  .progress-wrap {
+    max-width: 680px; margin: 0 auto 10px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .progress-bar-bg {
+    flex: 1; height: 10px; background: #dde3f8;
+    border-radius: 999px; overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 999px; transition: width 0.3s ease;
+  }
+  .progress-label { font-weight: 800; font-size: 0.9rem; color: var(--primary); white-space: nowrap; }
+
+  .score-live {
+    max-width: 680px; margin: 0 auto 18px;
+    text-align: center; font-weight: 700; color: var(--muted); font-size: 0.9rem;
+  }
+
+  .section-label {
+    max-width: 680px; margin: 20px auto 10px;
+    font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+    color: var(--primary); border-left: 4px solid var(--accent); padding-left: 12px;
+  }
+
+  .quiz-container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+  .q-card {
+    background: var(--card); border-radius: var(--radius);
+    padding: 18px 20px; box-shadow: 0 3px 16px rgba(67,97,238,0.07);
+    border: 2px solid transparent; transition: border-color 0.3s;
+  }
+  .q-card.correct { border-color: var(--green); background: #f0fdf9; }
+  .q-card.wrong   { border-color: var(--red);   background: #fff5f5; }
+
+  .q-number { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); margin-bottom: 4px; }
+  .q-text { font-size: 1rem; font-weight: 700; line-height: 1.5; margin-bottom: 12px; }
+  .q-text em { font-style: italic; color: #374151; }
+
+  .options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .option-btn {
+    padding: 8px 16px; border-radius: 999px;
+    border: 2px solid #c7d2fe; background: #eef2ff;
+    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: all 0.2s; color: var(--text);
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #e0e7ff; transform: translateY(-1px); }
+  .option-btn.selected-correct { background: var(--green); border-color: var(--green); color: white; }
+  .option-btn.selected-wrong   { background: var(--red);   border-color: var(--red);   color: white; }
+  .option-btn.reveal-correct   { background: var(--green); border-color: var(--green); color: white; opacity: 0.75; }
+
+  .fill-input {
+    width: 100%; padding: 9px 13px; border-radius: 10px;
+    border: 2px solid #c7d2fe; font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem; font-weight: 700; color: var(--text);
+    background: #eef2ff; outline: none; transition: border-color 0.2s;
+  }
+  .fill-input:focus { border-color: var(--primary); background: #e0e7ff; }
+  .fill-input.correct-input { border-color: var(--green); background: #f0fdf9; color: #059669; }
+  .fill-input.wrong-input   { border-color: var(--red);   background: #fff5f5; color: var(--red); }
+
+  .check-btn {
+    margin-top: 9px; padding: 7px 18px;
+    background: var(--primary); color: white; border: none;
+    border-radius: 999px; font-family: 'Nunito', sans-serif;
+    font-weight: 800; font-size: 0.88rem; cursor: pointer; transition: opacity 0.15s;
+  }
+  .check-btn:hover:not(:disabled) { opacity: 0.85; }
+  .check-btn:disabled { opacity: 0.45; cursor: default; }
+
+  .feedback { margin-top: 8px; font-size: 0.88rem; font-weight: 700; min-height: 20px; }
+  .feedback.ok  { color: #059669; }
+  .feedback.err { color: var(--red); }
+
+  .hint-box {
+    margin-top: 8px; padding: 7px 11px; background: #fef9c3;
+    border-radius: 10px; font-size: 0.82rem; font-weight: 700;
+    color: #92400e; display: none;
+  }
+  .hint-box.show { display: block; }
+
+  /* Score panel */
+  .score-panel {
+    max-width: 680px; margin: 24px auto 0;
+    background: var(--card); border-radius: var(--radius);
+    padding: 32px 24px; text-align: center;
+    box-shadow: 0 4px 24px rgba(67,97,238,0.12); display: none;
+  }
+  .score-panel.show { display: block; }
+  .score-panel h2 { font-family: 'Fredoka One', cursive; font-size: 1.8rem; color: var(--primary); }
+  .score-big { font-family: 'Fredoka One', cursive; font-size: 3.8rem; color: var(--accent); line-height: 1; margin: 14px 0 6px; }
+  .score-pct { font-size: 1.1rem; font-weight: 800; color: var(--muted); margin-bottom: 10px; }
+  .score-msg { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 22px; }
+  .retry-btn {
+    padding: 13px 36px; background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white; border: none; border-radius: 999px;
+    font-family: 'Fredoka One', cursive; font-size: 1.15rem; cursor: pointer; transition: transform 0.2s;
+  }
+  .retry-btn:hover { transform: scale(1.04); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 Present Simple vs. Present Continuous</h1>
+  <p>ESL Quiz &nbsp;·&nbsp; 100 Questions &nbsp;·&nbsp; 6th Grade</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 100</div>
+</div>
+<div class="score-live" id="scoreLive">Score: 0</div>
+
+<div class="quiz-container" id="quizContainer"></div>
+<div class="score-panel" id="scorePanel">
+  <h2>Quiz Complete! 🎉</h2>
+  <div class="score-big" id="scoreBig"></div>
+  <div class="score-pct" id="scorePct"></div>
+  <div class="score-msg" id="scoreMsg"></div>
+  <button class="retry-btn" onclick="location.reload()">Try Again 🔄</button>
+</div>
+
+<script>
+const TOTAL = 100;
+let answered = new Set();
+let score = 0;
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
+// type: "mc" = multiple choice, "fill" = fill-in-the-blank, "error" = correct/wrong
+const questions = [
+  // ── PART A: Multiple Choice (Q1–40) ─────────────────────────────────────
+  {s:"A",type:"mc",text:'She _____ to school every day.',opts:['walks','is walking','walk'],ans:'walks',exp:'Routine → Present Simple. "Every day" is the clue.'},
+  {s:"A",type:"mc",text:'Look! The dog _____ in the garden right now.',opts:['runs','is running','run'],ans:'is running',exp:'"Look!" and "right now" = action happening now → Present Continuous.'},
+  {s:"A",type:"mc",text:'My parents _____ dinner at the moment.',opts:['cook','cooks','are cooking'],ans:'are cooking',exp:'"At the moment" signals Present Continuous.'},
+  {s:"A",type:"mc",text:'He _____ English, Spanish, and a little French.',opts:['speaks','is speaking','speak'],ans:'speaks',exp:'Permanent ability → Present Simple.'},
+  {s:"A",type:"mc",text:'The Earth _____ around the Sun.',opts:['orbits','is orbiting','orbit'],ans:'orbits',exp:'Scientific fact → Present Simple.'},
+  {s:"A",type:"mc",text:'I _____ breakfast right now. Don\'t bother me!',opts:['eat','am eating','eats'],ans:'am eating',exp:'"Right now" = Present Continuous.'},
+  {s:"A",type:"mc",text:'Cats _____ a lot during the day.',opts:['sleep','are sleeping','sleeps'],ans:'sleep',exp:'General truth about cats → Present Simple.'},
+  {s:"A",type:"mc",text:'She _____ on the phone. Can you wait?',opts:['talk','talks','is talking'],ans:'is talking',exp:'Happening at this moment → Present Continuous.'},
+  {s:"A",type:"mc",text:'The train _____ at 9 a.m. every morning.',opts:['leave','is leaving','leaves'],ans:'leaves',exp:'Fixed schedule → Present Simple.'},
+  {s:"A",type:"mc",text:'We _____ a great movie tonight.',opts:['watch','are watching','watches'],ans:'are watching',exp:'Planned activity happening now/tonight → Present Continuous.'},
+  {s:"A",type:"mc",text:'He _____ his homework every evening after school.',opts:['does','is doing','do'],ans:'does',exp:'Routine → Present Simple (he/she/it + does).'},
+  {s:"A",type:"mc",text:'They _____ volleyball in the gym right now.',opts:['play','plays','are playing'],ans:'are playing',exp:'"Right now" → Present Continuous.'},
+  {s:"A",type:"mc",text:'I _____ my keys. Have you seen them?',opts:['lose','am losing','lost'],ans:'am losing',exp:'Ongoing situation → Present Continuous.'},
+  {s:"A",type:"mc",text:'The sun _____ in the east.',opts:['rise','rises','is rising'],ans:'rises',exp:'Scientific / permanent fact → Present Simple.'},
+  {s:"A",type:"mc",text:'My sister _____ to music while she studies.',opts:['listen','listens','is listening'],ans:'listens',exp:'Habit → Present Simple.'},
+  {s:"A",type:"mc",text:'Why _____ you laughing? What\'s so funny?',opts:['do','are','is'],ans:'are',exp:'"Are you laughing?" = action right now → Present Continuous.'},
+  {s:"A",type:"mc",text:'She _____ a shower every morning before school.',opts:['takes','is taking','take'],ans:'takes',exp:'Daily routine → Present Simple.'},
+  {s:"A",type:"mc",text:'Look out! That car _____ too fast!',opts:['goes','go','is going'],ans:'is going',exp:'"Look out!" = happening now → Present Continuous.'},
+  {s:"A",type:"mc",text:'We _____ football every Saturday with our friends.',opts:['play','are playing','plays'],ans:'play',exp:'Weekly routine → Present Simple.'},
+  {s:"A",type:"mc",text:'He _____ his grandparents this weekend.',opts:['visits','is visiting','visit'],ans:'is visiting',exp:'Arranged plan in progress → Present Continuous.'},
+  {s:"A",type:"mc",text:'My dog _____ its tail when it sees me.',opts:['wag','wags','is wagging'],ans:'wags',exp:'Always-true behavior → Present Simple.'},
+  {s:"A",type:"mc",text:'They _____ a new house right now.',opts:['build','builds','are building'],ans:'are building',exp:'Ongoing project → Present Continuous.'},
+  {s:"A",type:"mc",text:'She _____ to the gym twice a week.',opts:['goes','go','is going'],ans:'goes',exp:'Frequency expression → Present Simple.'},
+  {s:"A",type:"mc",text:'The children _____ in the pool at the moment.',opts:['swim','swims','are swimming'],ans:'are swimming',exp:'"At the moment" → Present Continuous.'},
+  {s:"A",type:"mc",text:'He _____ very well. Maybe he\'s sick.',opts:['doesn\'t look','isn\'t looking','don\'t look'],ans:'doesn\'t look',exp:'Stative/appearance verb "look" used as a state → Present Simple.'},
+  {s:"A",type:"mc",text:'I _____ a letter to my pen pal at the moment.',opts:['write','am writing','writes'],ans:'am writing',exp:'"At the moment" → Present Continuous.'},
+  {s:"A",type:"mc",text:'It _____ a lot in this city in winter.',opts:['rains','is raining','rain'],ans:'rains',exp:'General climate fact → Present Simple.'},
+  {s:"A",type:"mc",text:'It _____ outside — bring an umbrella!',opts:['rains','is raining','rain'],ans:'is raining',exp:'Happening right now → Present Continuous.'},
+  {s:"A",type:"mc",text:'She usually _____ coffee, but today she _____ tea.',opts:['drinks / is drinking','is drinking / drinks','drink / drink'],ans:'drinks / is drinking',exp:'Habit (Present Simple) vs. temporary action today (Present Continuous).'},
+  {s:"A",type:"mc",text:'The baby _____ right now. Please be quiet!',opts:['sleep','sleeps','is sleeping'],ans:'is sleeping',exp:'"Right now" → Present Continuous.'},
+  {s:"A",type:"mc",text:'My father _____ for a big company downtown.',opts:['works','is working','work'],ans:'works',exp:'Permanent job situation → Present Simple.'},
+  {s:"A",type:"mc",text:'She _____ her essay this week for the deadline.',opts:['writes','write','is writing'],ans:'is writing',exp:'"This week" = temporary ongoing activity → Present Continuous.'},
+  {s:"A",type:"mc",text:'Birds _____ south in winter.',opts:['fly','are flying','flies'],ans:'fly',exp:'Natural fact / general truth → Present Simple.'},
+  {s:"A",type:"mc",text:'The teacher _____ the students\' papers right now.',opts:['corrects','correct','is correcting'],ans:'is correcting',exp:'"Right now" → Present Continuous.'},
+  {s:"A",type:"mc",text:'He _____ three languages fluently.',opts:['speaks','is speaking','speak'],ans:'speaks',exp:'Permanent ability → Present Simple.'},
+  {s:"A",type:"mc",text:'I _____ you! That\'s hilarious!',opts:['don\'t believe','am not believing','believes'],ans:'don\'t believe',exp:'"Believe" is a stative verb — use Present Simple, not Continuous.'},
+  {s:"A",type:"mc",text:'She _____ on her laptop right now.',opts:['works','work','is working'],ans:'is working',exp:'"Right now" → Present Continuous.'},
+  {s:"A",type:"mc",text:'We _____ our homework every night.',opts:['do','are doing','does'],ans:'do',exp:'Habit → Present Simple.'},
+  {s:"A",type:"mc",text:'He _____ his bike to school today because it\'s nice out.',opts:['rides','ride','is riding'],ans:'is riding',exp:'Action happening today (possibly unusual) → Present Continuous.'},
+  {s:"A",type:"mc",text:'Dolphins _____ in groups called pods.',opts:['live','are living','lives'],ans:'live',exp:'Scientific fact about animals → Present Simple.'},
+
+  // ── PART B: Fill in the Blank (Q41–75) ──────────────────────────────────
+  {s:"B",type:"fill",text:'Tom usually _____ (wake up) at 7 a.m.',ans:['wakes up'],exp:'"Usually" = habit → Present Simple (he/she/it adds -s).'},
+  {s:"B",type:"fill",text:'They _____ (not / watch) TV right now — they are outside.',ans:["aren't watching","are not watching"],exp:'Negative Present Continuous = are not + verb-ing.'},
+  {s:"B",type:"fill",text:'Shh! The baby _____ (sleep) right now.',ans:['is sleeping'],exp:'"Shh!" and "right now" → Present Continuous.'},
+  {s:"B",type:"fill",text:'We _____ (not / eat) meat. We are vegetarians.',ans:["don't eat","do not eat"],exp:'Permanent habit → Present Simple negative.'},
+  {s:"B",type:"fill",text:'I can\'t talk now. I _____ (have) a shower.',ans:['am having'],exp:'"Can\'t talk now" = happening at this moment → Present Continuous.'},
+  {s:"B",type:"fill",text:'Water _____ (boil) at 100°C.',ans:['boils'],exp:'Scientific fact → Present Simple.'},
+  {s:"B",type:"fill",text:'She _____ (study) for her test this week.',ans:['is studying'],exp:'"This week" = temporary ongoing activity → Present Continuous.'},
+  {s:"B",type:"fill",text:'My dad _____ (read) the newspaper every Sunday.',ans:['reads'],exp:'Weekly routine → Present Simple.'},
+  {s:"B",type:"fill",text:'The kids _____ (play) in the yard. I can hear them!',ans:['are playing'],exp:'Action audible right now → Present Continuous.'},
+  {s:"B",type:"fill",text:'He _____ (not / like) spicy food.',ans:["doesn't like","does not like"],exp:'"Like" is stative; permanent preference → Present Simple negative.'},
+  {s:"B",type:"fill",text:'I _____ (think) about what to eat for lunch.',ans:['am thinking'],exp:'"Think" as an active process → Present Continuous.'},
+  {s:"B",type:"fill",text:'She _____ (always / forget) her keys. It\'s so annoying!',ans:['always forgets'],exp:'Repeated habit (with "always") → Present Simple.'},
+  {s:"B",type:"fill",text:'We _____ (visit) Paris next month. Everything is booked!',ans:['are visiting'],exp:'Fixed future arrangement → Present Continuous.'},
+  {s:"B",type:"fill",text:'He _____ (work) as a doctor at the city hospital.',ans:['works'],exp:'Permanent occupation → Present Simple.'},
+  {s:"B",type:"fill",text:'Listen! Someone _____ (knock) at the door.',ans:['is knocking'],exp:'"Listen!" = action happening now → Present Continuous.'},
+  {s:"B",type:"fill",text:'She _____ (not / speak) French very well yet.',ans:["doesn't speak","does not speak"],exp:'Ability → Present Simple negative.'},
+  {s:"B",type:"fill",text:'Look at him — he _____ (run) so fast!',ans:['is running'],exp:'"Look at him" = action right now → Present Continuous.'},
+  {s:"B",type:"fill",text:'I _____ (go) to the gym three times a week.',ans:['go'],exp:'Frequency → Present Simple.'},
+  {s:"B",type:"fill",text:'They _____ (build) a new school in our neighborhood right now.',ans:['are building'],exp:'"Right now" = ongoing action → Present Continuous.'},
+  {s:"B",type:"fill",text:'My cat _____ (sleep) on the sofa every afternoon.',ans:['sleeps'],exp:'Daily habit → Present Simple.'},
+  {s:"B",type:"fill",text:'He _____ (write) an email at the moment. Call back later.',ans:['is writing'],exp:'"At the moment" → Present Continuous.'},
+  {s:"B",type:"fill",text:'She _____ (not / watch) the news every day.',ans:["doesn't watch","does not watch"],exp:'Routine negative → Present Simple.'},
+  {s:"B",type:"fill",text:'The stars _____ (shine) brightly tonight.',ans:['are shining'],exp:'Happening now/tonight → Present Continuous.'},
+  {s:"B",type:"fill",text:'Bees _____ (collect) nectar from flowers.',ans:['collect'],exp:'Natural behavior / general truth → Present Simple.'},
+  {s:"B",type:"fill",text:'Why _____ she _____ (cry)? Is something wrong?',ans:['is she crying'],exp:'Action happening right now → Present Continuous.'},
+  {s:"B",type:"fill",text:'He _____ (not / do) his homework right now — he\'s gaming.',ans:["isn't doing","is not doing"],exp:'Negative Present Continuous.'},
+  {s:"B",type:"fill",text:'I _____ (not / understand) this question.',ans:["don't understand","do not understand"],exp:'"Understand" is stative → Present Simple negative.'},
+  {s:"B",type:"fill",text:'She _____ (wear) a red dress today. She looks great!',ans:['is wearing'],exp:'What someone is wearing right now → Present Continuous.'},
+  {s:"B",type:"fill",text:'My brother _____ (practice) guitar every evening.',ans:['practices'],exp:'Routine → Present Simple.'},
+  {s:"B",type:"fill",text:'The company _____ (launch) a new product this month.',ans:['is launching'],exp:'Temporary / in-progress activity → Present Continuous.'},
+  {s:"B",type:"fill",text:'Plants _____ (need) sunlight and water to grow.',ans:['need'],exp:'General scientific fact → Present Simple.'},
+  {s:"B",type:"fill",text:'He _____ (not / pay) attention in class right now.',ans:["isn't paying","is not paying"],exp:'Negative Present Continuous.'},
+  {s:"B",type:"fill",text:'They _____ (argue) again. I can hear them from here.',ans:['are arguing'],exp:'Audible action right now → Present Continuous.'},
+  {s:"B",type:"fill",text:'She _____ (take) the bus to work every day.',ans:['takes'],exp:'Daily routine → Present Simple.'},
+  {s:"B",type:"fill",text:'I _____ (read) a really interesting book this week.',ans:['am reading'],exp:'"This week" = ongoing temporary activity → Present Continuous.'},
+
+  // ── PART C: Error Correction (Q76–100) ──────────────────────────────────
+  {s:"C",type:"error",text:'"She is knowing the answer."',ans:'Wrong',exp:'❌ Wrong. "Know" is stative — use Present Simple. ✅ She knows the answer.'},
+  {s:"C",type:"error",text:'"He is playing football every Saturday."',ans:'Wrong',exp:'❌ Wrong. "Every Saturday" = routine → Present Simple. ✅ He plays football every Saturday.'},
+  {s:"C",type:"error",text:'"They are studying for their exam this week."',ans:'Correct',exp:'✅ Correct! "This week" = temporary ongoing activity → Present Continuous.'},
+  {s:"C",type:"error",text:'"I am going to school every morning."',ans:'Wrong',exp:'❌ Wrong. "Every morning" = routine → Present Simple. ✅ I go to school every morning.'},
+  {s:"C",type:"error",text:'"Look! He runs so fast!"',ans:'Wrong',exp:'❌ Wrong. "Look!" signals action right now → Present Continuous. ✅ Look! He is running so fast!'},
+  {s:"C",type:"error",text:'"She doesn\'t like coffee."',ans:'Correct',exp:'✅ Correct! "Like" is stative, and this is a permanent preference → Present Simple negative.'},
+  {s:"C",type:"error",text:'"They are having a car. It\'s red."',ans:'Wrong',exp:'❌ Wrong. "Have" as possession is stative → Present Simple. ✅ They have a car.'},
+  {s:"C",type:"error",text:'"I am not understanding you. Please speak slowly."',ans:'Wrong',exp:'❌ Wrong. "Understand" is stative → Present Simple. ✅ I don\'t understand you.'},
+  {s:"C",type:"error",text:'"She is teaching English at that school."',ans:'Correct',exp:'✅ Correct! This can be a current/ongoing situation → Present Continuous is fine here.'},
+  {s:"C",type:"error",text:'"The children play in the garden right now."',ans:'Wrong',exp:'❌ Wrong. "Right now" → Present Continuous. ✅ The children are playing in the garden right now.'},
+  {s:"C",type:"error",text:'"Water is boiling at 100 degrees Celsius."',ans:'Wrong',exp:'❌ Wrong. Scientific fact → Present Simple. ✅ Water boils at 100 degrees Celsius.'},
+  {s:"C",type:"error",text:'"He works from home these days."',ans:'Correct',exp:'✅ Correct! "These days" = current temporary situation → Present Continuous or Simple both acceptable, but Simple is natural here.'},
+  {s:"C",type:"error",text:'"I am wanting a pizza right now."',ans:'Wrong',exp:'❌ Wrong. "Want" is stative → Present Simple. ✅ I want a pizza right now.'},
+  {s:"C",type:"error",text:'"She is always forgetting her homework."',ans:'Correct',exp:'✅ Correct! "Always" + Present Continuous can express an annoying repeated habit.'},
+  {s:"C",type:"error",text:'"The sun rises in the east."',ans:'Correct',exp:'✅ Correct! Scientific/geographical fact → Present Simple.'},
+  {s:"C",type:"error",text:'"He is seeming tired today."',ans:'Wrong',exp:'❌ Wrong. "Seem" is stative → Present Simple. ✅ He seems tired today.'},
+  {s:"C",type:"error",text:'"We are visiting our grandparents next Sunday. It\'s already planned."',ans:'Correct',exp:'✅ Correct! Fixed future arrangement → Present Continuous is correct.'},
+  {s:"C",type:"error",text:'"She sings in the shower at the moment."',ans:'Wrong',exp:'❌ Wrong. "At the moment" = action happening now → Present Continuous. ✅ She is singing in the shower at the moment.'},
+  {s:"C",type:"error",text:'"I believe you. Don\'t worry."',ans:'Correct',exp:'✅ Correct! "Believe" is stative → Present Simple.'},
+  {s:"C",type:"error",text:'"He is knowing how to drive a car."',ans:'Wrong',exp:'❌ Wrong. "Know" is stative → Present Simple. ✅ He knows how to drive a car.'},
+  {s:"C",type:"error",text:'"Listen! The birds are singing beautifully."',ans:'Correct',exp:'✅ Correct! "Listen!" signals action right now → Present Continuous.'},
+  {s:"C",type:"error",text:'"Dogs is barking at night sometimes."',ans:'Wrong',exp:'❌ Wrong. Two errors: "dogs" is plural (no -s on verb), and general habit → Present Simple. ✅ Dogs bark at night sometimes.'},
+  {s:"C",type:"error",text:'"She is loving chocolate ice cream."',ans:'Wrong',exp:'❌ Wrong. "Love" is stative → Present Simple. ✅ She loves chocolate ice cream.'},
+  {s:"C",type:"error",text:'"He doesn\'t eat breakfast on weekdays."',ans:'Correct',exp:'✅ Correct! Routine negative → Present Simple.'},
+  {s:"C",type:"error",text:'"I am not liking this weather."',ans:'Wrong',exp:'❌ Wrong. "Like" is stative → Present Simple. ✅ I don\'t like this weather.'},
+];
+
+// ── SECTION LABELS ────────────────────────────────────────────────────────────
+const sectionMeta = {
+  A: { title: 'Part A — Choose the correct form', subtitle: 'Questions 1–40', color: '#4361ee' },
+  B: { title: 'Part B — Write the correct form of the verb', subtitle: 'Questions 41–75', color: '#7209b7' },
+  C: { title: 'Part C — Is the sentence correct or wrong?', subtitle: 'Questions 76–100', color: '#f72585' },
+};
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  let lastSection = null;
+
+  questions.forEach((q, i) => {
+    const qNum = i + 1;
+
+    if (q.s !== lastSection) {
+      lastSection = q.s;
+      const sm = sectionMeta[q.s];
+      const label = document.createElement('div');
+      label.className = 'section-label';
+      label.style.borderColor = sm.color;
+      label.innerHTML = sm.title + ' <span style="font-family:Nunito;font-size:0.8rem;font-weight:700;color:#6b7280">— ' + sm.subtitle + '</span>';
+      container.appendChild(label);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'q' + qNum;
+
+    const num = document.createElement('div');
+    num.className = 'q-number';
+    num.textContent = 'Question ' + qNum;
+    card.appendChild(num);
+
+    const text = document.createElement('div');
+    text.className = 'q-text';
+    text.innerHTML = q.type === 'error'
+      ? 'Is this sentence correct or wrong?<br>' + q.text
+      : q.text;
+    card.appendChild(text);
+
+    if (q.type === 'mc') {
+      const opts = document.createElement('div');
+      opts.className = 'options';
+      q.opts.forEach(o => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = o;
+        btn.onclick = () => handleMC(btn, qNum, o, q.ans, q.exp, q.opts);
+        opts.appendChild(btn);
+      });
+      card.appendChild(opts);
+
+    } else if (q.type === 'error') {
+      const opts = document.createElement('div');
+      opts.className = 'options';
+      ['Correct','Wrong'].forEach(o => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = o === 'Correct' ? '✅ Correct' : '❌ Wrong';
+        btn.onclick = () => handleMC(btn, qNum, o, q.ans, q.exp, ['Correct','Wrong']);
+        opts.appendChild(btn);
+      });
+      card.appendChild(opts);
+
+    } else {
+      const input = document.createElement('input');
+      input.className = 'fill-input';
+      input.id = 'qi' + qNum;
+      input.placeholder = 'Type your answer here...';
+      input.oninput = () => {
+        input.className = 'fill-input';
+        document.getElementById('qf' + qNum).textContent = '';
+        document.getElementById('qh' + qNum).classList.remove('show');
+      };
+      input.onkeydown = e => { if (e.key === 'Enter') checkFill(qNum, q.ans, q.exp); };
+      card.appendChild(input);
+
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'check-btn';
+      checkBtn.id = 'qb' + qNum;
+      checkBtn.textContent = 'Check ✓';
+      checkBtn.onclick = () => checkFill(qNum, q.ans, q.exp);
+      card.appendChild(checkBtn);
+    }
+
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = 'qf' + qNum;
+    card.appendChild(fb);
+
+    const hint = document.createElement('div');
+    hint.className = 'hint-box';
+    hint.id = 'qh' + qNum;
+    card.appendChild(hint);
+
+    container.appendChild(card);
+  });
+}
+
+function handleMC(btn, qNum, chosen, correct, exp, allOpts) {
+  if (answered.has(qNum)) return;
+  answered.add(qNum);
+
+  const card = document.getElementById('q' + qNum);
+  const fb   = document.getElementById('qf' + qNum);
+  const hint = document.getElementById('qh' + qNum);
+  card.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    btn.classList.add('selected-correct');
+    card.classList.add('correct');
+    fb.className = 'feedback ok';
+    fb.textContent = '✅ Correct!';
+    score++;
+  } else {
+    btn.classList.add('selected-wrong');
+    card.classList.add('wrong');
+    fb.className = 'feedback err';
+    fb.textContent = '❌ Not quite.';
+    card.querySelectorAll('.option-btn').forEach(b => {
+      if (b.textContent.replace(/[✅❌] /,'').trim() === correct || b.textContent.trim() === correct) {
+        b.classList.add('reveal-correct');
+      }
+    });
+    hint.textContent = '📖 ' + exp;
+    hint.classList.add('show');
+  }
+  updateProgress();
+}
+
+function checkFill(qNum, accepted, exp) {
+  if (answered.has(qNum)) return;
+  const input = document.getElementById('qi' + qNum);
+  const val   = input.value.trim().toLowerCase();
+  if (!val) return;
+
+  answered.add(qNum);
+  const card = document.getElementById('q' + qNum);
+  const fb   = document.getElementById('qf' + qNum);
+  const hint = document.getElementById('qh' + qNum);
+  document.getElementById('qb' + qNum).disabled = true;
+  input.disabled = true;
+
+  const ok = accepted.some(a => a.toLowerCase() === val);
+  if (ok) {
+    input.classList.add('correct-input');
+    card.classList.add('correct');
+    fb.className = 'feedback ok';
+    fb.textContent = '✅ Correct!';
+    score++;
+  } else {
+    input.classList.add('wrong-input');
+    card.classList.add('wrong');
+    fb.className = 'feedback err';
+    fb.textContent = `❌ Answer: "${accepted[0]}"`;
+    hint.textContent = '📖 ' + exp;
+    hint.classList.add('show');
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const n = answered.size;
+  document.getElementById('progressBar').style.width = (n / TOTAL * 100) + '%';
+  document.getElementById('progressLabel').textContent = n + ' / ' + TOTAL;
+  document.getElementById('scoreLive').textContent = 'Score: ' + score + ' / ' + n + ' answered';
+  if (n === TOTAL) setTimeout(showScore, 700);
+}
+
+function showScore() {
+  const panel = document.getElementById('scorePanel');
+  panel.classList.add('show');
+  document.getElementById('scoreBig').textContent = score + '/100';
+  const pct = Math.round(score);
+  document.getElementById('scorePct').textContent = pct + '%';
+  let msg = '';
+  if (pct === 100)     msg = '🌟 Perfect! You nailed every single question!';
+  else if (pct >= 90)  msg = '🎉 Outstanding! Almost flawless!';
+  else if (pct >= 80)  msg = '👏 Great job! Strong understanding of the tenses.';
+  else if (pct >= 70)  msg = '👍 Good work! Review the incorrect ones and try again.';
+  else if (pct >= 60)  msg = '📚 Decent start — focus on the hints and practice more.';
+  else                 msg = '💪 Keep going! Every mistake is a learning opportunity.';
+  document.getElementById('scoreMsg').textContent = msg;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
