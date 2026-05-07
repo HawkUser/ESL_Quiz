@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Present Simple vs Present Continuous — ESL Quiz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap');
+  :root{--bg:#f0f4ff;--card:#fff;--primary:#4361ee;--accent:#f72585;--green:#06d6a0;--red:#ef233c;--text:#1a1a2e;--muted:#6b7280;--radius:16px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px 16px 60px}
+  header{text-align:center;margin-bottom:20px}
+  header h1{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--primary)}
+  header p{color:var(--muted);font-weight:600;margin-top:4px;font-size:.9rem}
+  .top-bar{max-width:680px;margin:0 auto 6px;display:flex;align-items:center;gap:12px}
+  .pb-bg{flex:1;height:10px;background:#dde3f8;border-radius:999px;overflow:hidden}
+  .pb{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:999px;transition:width .3s ease}
+  .pb-label{font-weight:800;font-size:.9rem;color:var(--primary);white-space:nowrap}
+  .score-live{max-width:680px;margin:0 auto 16px;text-align:center;font-weight:700;color:var(--muted);font-size:.88rem}
+  .section-label{max-width:680px;margin:18px auto 8px;font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--primary);border-left:4px solid var(--accent);padding-left:12px}
+  .quiz-wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:13px}
+  .q-card{background:var(--card);border-radius:var(--radius);padding:17px 19px;box-shadow:0 3px 14px rgba(67,97,238,.07);border:2px solid transparent;transition:border-color .3s}
+  .q-card.correct{border-color:var(--green);background:#f0fdf9}
+  .q-card.wrong{border-color:var(--red);background:#fff5f5}
+  .q-num{font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:3px}
+  .q-text{font-size:.97rem;font-weight:700;line-height:1.5;margin-bottom:11px}
+  .opts{display:flex;flex-wrap:wrap;gap:7px}
+  .opt{padding:7px 15px;border-radius:999px;border:2px solid #c7d2fe;background:#eef2ff;font-family:'Nunito',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .18s;color:var(--text)}
+  .opt:hover:not(:disabled){border-color:var(--primary);background:#e0e7ff;transform:translateY(-1px)}
+  .opt.ok{background:var(--green);border-color:var(--green);color:#fff}
+  .opt.err{background:var(--red);border-color:var(--red);color:#fff}
+  .opt.reveal{background:var(--green);border-color:var(--green);color:#fff;opacity:.72}
+  .fill-wrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .fill-input{flex:1;min-width:180px;padding:8px 12px;border-radius:10px;border:2px solid #c7d2fe;font-family:'Nunito',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);background:#eef2ff;outline:none;transition:border-color .2s}
+  .fill-input:focus{border-color:var(--primary);background:#e0e7ff}
+  .fill-input.ok{border-color:var(--green);background:#f0fdf9;color:#059669}
+  .fill-input.err{border-color:var(--red);background:#fff5f5;color:var(--red)}
+  .check-btn{padding:8px 17px;background:var(--primary);color:#fff;border:none;border-radius:999px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.86rem;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+  .check-btn:hover:not(:disabled){opacity:.85}
+  .check-btn:disabled{opacity:.42;cursor:default}
+  .fb{margin-top:7px;font-size:.86rem;font-weight:700;min-height:18px}
+  .fb.ok{color:#059669}.fb.err{color:var(--red)}
+  .hint{margin-top:7px;padding:6px 10px;background:#fef9c3;border-radius:9px;font-size:.8rem;font-weight:700;color:#92400e;display:none}
+  .hint.show{display:block}
+  .score-panel{max-width:680px;margin:24px auto 0;background:var(--card);border-radius:var(--radius);padding:30px 24px;text-align:center;box-shadow:0 4px 24px rgba(67,97,238,.12);display:none}
+  .score-panel.show{display:block}
+  .score-panel h2{font-family:'Fredoka One',cursive;font-size:1.7rem;color:var(--primary)}
+  .score-big{font-family:'Fredoka One',cursive;font-size:3.6rem;color:var(--accent);line-height:1;margin:12px 0 4px}
+  .score-pct{font-size:1rem;font-weight:800;color:var(--muted);margin-bottom:8px}
+  .score-msg{font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:20px}
+  .retry-btn{padding:12px 34px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border:none;border-radius:999px;font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;transition:transform .2s}
+  .retry-btn:hover{transform:scale(1.04)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧠 Present Simple vs. Present Continuous</h1>
+  <p>ESL Quiz &nbsp;·&nbsp; 6th Grade &nbsp;·&nbsp; 100 random questions each time</p>
+</header>
+<div class="top-bar">
+  <div class="pb-bg"><div class="pb" id="pb"></div></div>
+  <div class="pb-label" id="pbLabel">0 / 100</div>
+</div>
+<div class="score-live" id="scoreLive">Score: 0</div>
+<div class="quiz-wrap" id="quizWrap"></div>
+<div class="score-panel" id="scorePanel">
+  <h2>Quiz Complete! 🎉</h2>
+  <div class="score-big" id="scoreBig"></div>
+  <div class="score-pct" id="scorePct"></div>
+  <div class="score-msg" id="scoreMsg"></div>
+  <button class="retry-btn" onclick="location.reload()">New Quiz 🔄</button>
+</div>
+<script>
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function pick(arr,n){return shuffle(arr).slice(0,n);}
+// Normalise student input: trim, lowercase, collapse whitespace, replace curly apostrophes
+function norm(s){return s.trim().toLowerCase().replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"').replace(/\s+/g,' ');}
+
+// ── QUESTION BANK ────────────────────────────────────────────────────────────
+const BANK = [
+{type:'mc',text:"She _____ to school every day.",opts:["is walking", "walk", "walks"],ans:"walks",exp:"Routine + every day = Present Simple."},
+{type:'mc',text:"Look! The dog _____ in the garden.",opts:["runs", "run", "is running"],ans:"is running",exp:"Look! = action right now = Present Continuous."},
+{type:'mc',text:"My parents _____ dinner at the moment.",opts:["cook", "cooks", "are cooking"],ans:"are cooking",exp:"At the moment = Present Continuous."},
+{type:'mc',text:"He _____ English and Spanish fluently.",opts:["is speaking", "speak", "speaks"],ans:"speaks",exp:"Permanent ability = Present Simple."},
+{type:'mc',text:"The Earth _____ around the Sun.",opts:["is orbiting", "orbit", "orbits"],ans:"orbits",exp:"Scientific fact = Present Simple."},
+{type:'mc',text:"I _____ breakfast right now. Don't bother me!",opts:["eat", "eats", "am eating"],ans:"am eating",exp:"Right now = Present Continuous."},
+{type:'mc',text:"Cats _____ a lot during the day.",opts:["is sleeping", "sleeps", "sleep"],ans:"sleep",exp:"General truth, plural subject = Present Simple."},
+{type:'mc',text:"She _____ on the phone. Can you wait?",opts:["talk", "talks", "is talking"],ans:"is talking",exp:"Happening at this moment = Present Continuous."},
+{type:'mc',text:"The train _____ at 9 a.m. every morning.",opts:["leave", "is leaving", "leaves"],ans:"leaves",exp:"Fixed timetable = Present Simple."},
+{type:'mc',text:"We _____ a great movie tonight.",opts:["watch", "watches", "are watching"],ans:"are watching",exp:"Planned activity now = Present Continuous."},
+{type:'mc',text:"He _____ his homework every evening.",opts:["is doing", "do", "does"],ans:"does",exp:"Routine + every evening = Present Simple."},
+{type:'mc',text:"They _____ volleyball in the gym right now.",opts:["play", "plays", "are playing"],ans:"are playing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"I _____ my keys. Have you seen them?",opts:["lose", "lost", "am losing"],ans:"am losing",exp:"Ongoing frustrating situation = Present Continuous."},
+{type:'mc',text:"The sun _____ in the east.",opts:["rise", "is rising", "rises"],ans:"rises",exp:"Scientific/geographical fact = Present Simple."},
+{type:'mc',text:"My sister _____ to music while she studies.",opts:["listen", "is listening", "listens"],ans:"listens",exp:"Habit = Present Simple."},
+{type:'mc',text:"Why _____ you laughing? What's so funny?",opts:["do", "is", "are"],ans:"are",exp:"Action happening right now = Present Continuous."},
+{type:'mc',text:"She _____ a shower every morning before school.",opts:["take", "is taking", "takes"],ans:"takes",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"Look out! That car _____ too fast!",opts:["go", "goes", "is going"],ans:"is going",exp:"Look out! = immediate action = Present Continuous."},
+{type:'mc',text:"We _____ football every Saturday.",opts:["are playing", "plays", "play"],ans:"play",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"He _____ his grandparents this weekend.",opts:["visits", "visit", "is visiting"],ans:"is visiting",exp:"Arranged plan = Present Continuous."},
+{type:'mc',text:"My dog _____ its tail when it sees me.",opts:["wag", "is wagging", "wags"],ans:"wags",exp:"Always-true behavior = Present Simple."},
+{type:'mc',text:"They _____ a new house right now.",opts:["build", "builds", "are building"],ans:"are building",exp:"Ongoing project = Present Continuous."},
+{type:'mc',text:"She _____ to the gym twice a week.",opts:["go", "is going", "goes"],ans:"goes",exp:"Frequency expression = Present Simple."},
+{type:'mc',text:"The children _____ in the pool at the moment.",opts:["swim", "swims", "are swimming"],ans:"are swimming",exp:"At the moment = Present Continuous."},
+{type:'mc',text:"I _____ a letter to my pen pal right now.",opts:["write", "writes", "am writing"],ans:"am writing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"It _____ a lot in this city in winter.",opts:["is raining", "rain", "rains"],ans:"rains",exp:"General climate fact = Present Simple."},
+{type:'mc',text:"It _____ outside \u2014 bring an umbrella!",opts:["rains", "rain", "is raining"],ans:"is raining",exp:"Happening right now = Present Continuous."},
+{type:'mc',text:"The baby _____ right now. Please be quiet!",opts:["sleep", "sleeps", "is sleeping"],ans:"is sleeping",exp:"Right now = Present Continuous."},
+{type:'mc',text:"My father _____ for a big company downtown.",opts:["is working", "work", "works"],ans:"works",exp:"Permanent job = Present Simple."},
+{type:'mc',text:"She _____ her essay this week for the deadline.",opts:["writes", "write", "is writing"],ans:"is writing",exp:"This week = temporary ongoing = Present Continuous."},
+{type:'mc',text:"Birds _____ south in winter.",opts:["are flying", "flies", "fly"],ans:"fly",exp:"Natural fact, plural = Present Simple."},
+{type:'mc',text:"The teacher _____ the students' papers right now.",opts:["corrects", "correct", "is correcting"],ans:"is correcting",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ three languages fluently.",opts:["is speaking", "speak", "speaks"],ans:"speaks",exp:"Permanent ability = Present Simple."},
+{type:'mc',text:"I _____ you! That's hilarious!",opts:["am not believing", "believes", "don't believe"],ans:"don't believe",exp:"Believe is stative = Present Simple."},
+{type:'mc',text:"She _____ on her laptop right now.",opts:["works", "work", "is working"],ans:"is working",exp:"Right now = Present Continuous."},
+{type:'mc',text:"We _____ our homework every night.",opts:["are doing", "does", "do"],ans:"do",exp:"Habit = Present Simple."},
+{type:'mc',text:"He _____ his bike to school today.",opts:["rides", "ride", "is riding"],ans:"is riding",exp:"Happening today = Present Continuous."},
+{type:'mc',text:"Dolphins _____ in groups called pods.",opts:["are living", "lives", "live"],ans:"live",exp:"Scientific fact, plural = Present Simple."},
+{type:'mc',text:"The kids _____ so much noise right now!",opts:["make", "makes", "are making"],ans:"are making",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She always _____ her lunch to school.",opts:["is bringing", "bring", "brings"],ans:"brings",exp:"Always + routine = Present Simple."},
+{type:'mc',text:"Water _____ at 100 degrees Celsius.",opts:["is boiling", "boil", "boils"],ans:"boils",exp:"Scientific fact = Present Simple."},
+{type:'mc',text:"He _____ a sandwich at the moment.",opts:["eats", "eat", "is eating"],ans:"is eating",exp:"At the moment = Present Continuous."},
+{type:'mc',text:"They _____ Spanish at their new school.",opts:["are learning", "learns", "learn"],ans:"are learning",exp:"Ongoing current activity = Present Continuous."},
+{type:'mc',text:"My mum _____ coffee every morning.",opts:["is drinking", "drink", "drinks"],ans:"drinks",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"The bus _____ every 10 minutes.",opts:["is coming", "come", "comes"],ans:"comes",exp:"Scheduled timetable = Present Simple."},
+{type:'mc',text:"Listen! Someone _____ at the door.",opts:["knock", "knocks", "is knocking"],ans:"is knocking",exp:"Listen! = right now = Present Continuous."},
+{type:'mc',text:"I _____ for my test all week.",opts:["study", "studies", "am studying"],ans:"am studying",exp:"Ongoing this week = Present Continuous."},
+{type:'mc',text:"He _____ football every day after school.",opts:["is playing", "play", "plays"],ans:"plays",exp:"Routine = Present Simple."},
+{type:'mc',text:"We _____ to the cinema this Friday. It's planned.",opts:["go", "goes", "are going"],ans:"are going",exp:"Planned arrangement = Present Continuous."},
+{type:'mc',text:"She _____ very fast for her age.",opts:["is running", "run", "runs"],ans:"runs",exp:"Habitual ability = Present Simple."},
+{type:'mc',text:"They _____ at the hotel right now.",opts:["stay", "stays", "are staying"],ans:"are staying",exp:"Right now = Present Continuous."},
+{type:'mc',text:"My grandma _____ tea every afternoon.",opts:["is drinking", "drink", "drinks"],ans:"drinks",exp:"Routine = Present Simple."},
+{type:'mc',text:"He _____ his friend on the phone right now.",opts:["calls", "call", "is calling"],ans:"is calling",exp:"Right now = Present Continuous."},
+{type:'mc',text:"It _____ every day in the rainforest.",opts:["is raining", "rain", "rains"],ans:"rains",exp:"General climate fact = Present Simple."},
+{type:'mc',text:"She _____ a novel this month.",opts:["reads", "read", "is reading"],ans:"is reading",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"They _____ to school on Saturdays.",opts:["don't go", "isn't going", "doesn't go"],ans:"don't go",exp:"Habit negative, plural = Present Simple."},
+{type:'mc',text:"He _____ at the moment \u2014 can I take a message?",opts:["sleeps", "sleep", "is sleeping"],ans:"is sleeping",exp:"At the moment = Present Continuous."},
+{type:'mc',text:"The shop _____ at 9 every morning.",opts:["is opening", "open", "opens"],ans:"opens",exp:"Timetable/schedule = Present Simple."},
+{type:'mc',text:"I _____ what you mean. Could you repeat that?",opts:["am not understanding", "doesn't understand", "don't understand"],ans:"don't understand",exp:"Understand is stative = Present Simple."},
+{type:'mc',text:"She _____ her teeth twice a day.",opts:["is brushing", "brush", "brushes"],ans:"brushes",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"The dog _____ at strangers in the street right now.",opts:["bark", "barks", "is barking"],ans:"is barking",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ chess every Sunday with his dad.",opts:["is playing", "play", "plays"],ans:"plays",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"I _____ really hard this semester.",opts:["work", "works", "am working"],ans:"am working",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"They _____ a new language together.",opts:["learns", "learn", "are learning"],ans:"are learning",exp:"Ongoing activity = Present Continuous."},
+{type:'mc',text:"She _____ the violin beautifully.",opts:["is playing", "play", "plays"],ans:"plays",exp:"Permanent skill = Present Simple."},
+{type:'mc',text:"He _____ 5 km every morning before work.",opts:["is running", "run", "runs"],ans:"runs",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"They _____ the project this week.",opts:["finishes", "finish", "are finishing"],ans:"are finishing",exp:"Temporary this week = Present Continuous."},
+{type:'mc',text:"The cat _____ on the warm keyboard again!",opts:["sleeps", "sleep", "is sleeping"],ans:"is sleeping",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ her friends every Friday.",opts:["is meeting", "meet", "meets"],ans:"meets",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"I _____ a headache right now.",opts:["have", "am having", "has"],ans:"have",exp:"Have (state) = stative = Present Simple."},
+{type:'mc',text:"He _____ dinner for the family tonight.",opts:["cooks", "cook", "is cooking"],ans:"is cooking",exp:"Happening now/tonight = Present Continuous."},
+{type:'mc',text:"We _____ in a small apartment near the school.",opts:["are living", "live", "lives"],ans:"live",exp:"Permanent residence = Present Simple."},
+{type:'mc',text:"She _____ this month because her car is broken.",opts:["walks", "walk", "is walking"],ans:"is walking",exp:"Temporary situation = Present Continuous."},
+{type:'mc',text:"The river _____ through the city center.",opts:["is flowing", "flow", "flows"],ans:"flows",exp:"Geographical fact = Present Simple."},
+{type:'mc',text:"He _____ his essay right now and can't be disturbed.",opts:["writes", "write", "is writing"],ans:"is writing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"They _____ basketball after school on Tuesdays.",opts:["are playing", "plays", "play"],ans:"play",exp:"Regular schedule = Present Simple."},
+{type:'mc',text:"She _____ her homework at the kitchen table.",opts:["does", "do", "is doing"],ans:"is doing",exp:"Ongoing right now = Present Continuous."},
+{type:'mc',text:"He _____ to the radio every morning while driving.",opts:["is listening", "listen", "listens"],ans:"listens",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"The children _____ in the park. I can see them.",opts:["play", "plays", "are playing"],ans:"are playing",exp:"Observable right now = Present Continuous."},
+{type:'mc',text:"My dad _____ the newspaper every Sunday.",opts:["is reading", "read", "reads"],ans:"reads",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"She _____ a presentation for tomorrow right now.",opts:["prepares", "prepare", "is preparing"],ans:"is preparing",exp:"Working on it right now = Present Continuous."},
+{type:'mc',text:"He usually _____ up at 6 a.m.",opts:["is waking", "wake", "wakes"],ans:"wakes",exp:"Usually = routine = Present Simple."},
+{type:'mc',text:"Look! She _____ at you from the window!",opts:["wave", "waves", "is waving"],ans:"is waving",exp:"Look! = right now = Present Continuous."},
+{type:'mc',text:"The train _____ at platform 3 right now.",opts:["waits", "wait", "is waiting"],ans:"is waiting",exp:"Right now = Present Continuous."},
+{type:'mc',text:"I _____ French at the community center this year.",opts:["study", "studies", "am studying"],ans:"am studying",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"She _____ to bed at 10 p.m. on school nights.",opts:["go", "is going", "goes"],ans:"goes",exp:"Routine = Present Simple."},
+{type:'mc',text:"The mechanic _____ our car at the moment.",opts:["fixes", "fix", "is fixing"],ans:"is fixing",exp:"At the moment = Present Continuous."},
+{type:'mc',text:"Dogs _____ with their tails when they are happy.",opts:["are wagging", "wag", "wags"],ans:"wag",exp:"General animal fact, plural = Present Simple."},
+{type:'mc',text:"He _____ right now because he is tired.",opts:["nap", "naps", "is napping"],ans:"is napping",exp:"Right now = Present Continuous."},
+{type:'mc',text:"We _____ a new park in our town this year.",opts:["build", "builds", "are building"],ans:"are building",exp:"Temporary project = Present Continuous."},
+{type:'mc',text:"She _____ coffee. She hates the taste.",opts:["doesn't drink", "isn't drinking", "don't drink"],ans:"doesn't drink",exp:"Permanent preference = Present Simple."},
+{type:'mc',text:"He _____ at the window and watching the rain.",opts:["stands", "stand", "is standing"],ans:"is standing",exp:"Ongoing right now = Present Continuous."},
+{type:'mc',text:"My brother _____ the guitar every evening.",opts:["is practicing", "practice", "practices"],ans:"practices",exp:"Routine = Present Simple."},
+{type:'mc',text:"She _____ a cake for her mum's birthday right now.",opts:["bakes", "bake", "is baking"],ans:"is baking",exp:"Right now = Present Continuous."},
+{type:'mc',text:"They _____ on their project. Don't disturb them.",opts:["work", "works", "are working"],ans:"are working",exp:"Ongoing = Present Continuous."},
+{type:'mc',text:"The Earth _____ on its own axis once a day.",opts:["is rotating", "rotate", "rotates"],ans:"rotates",exp:"Scientific fact = Present Simple."},
+{type:'mc',text:"He _____ coffee three times a day.",opts:["drinks", "drink", "is drinking"],ans:"drinks",exp:"Frequency = Present Simple."},
+{type:'mc',text:"We _____ a really good podcast right now.",opts:["listen", "listens", "are listening"],ans:"are listening",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ the answer \u2014 I can see it on his face.",opts:["knows", "know", "is knowing"],ans:"knows",exp:"Know is stative = Present Simple."},
+{type:'mc',text:"The students _____ quietly at their desks.",opts:["sit", "sits", "are sitting"],ans:"are sitting",exp:"Ongoing right now = Present Continuous."},
+{type:'mc',text:"My cat _____ fish but not vegetables.",opts:["likes", "like", "is liking"],ans:"likes",exp:"Preference = stative = Present Simple."},
+{type:'mc',text:"Look \u2014 she _____ to cross the street!",opts:["tries", "try", "is trying"],ans:"is trying",exp:"Look = right now = Present Continuous."},
+{type:'mc',text:"He _____ a new project this semester.",opts:["leads", "lead", "is leading"],ans:"is leading",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"The moon _____ around the Earth.",opts:["is orbiting", "orbit", "orbits"],ans:"orbits",exp:"Scientific fact = Present Simple."},
+{type:'mc',text:"I _____ tired. I need a rest.",opts:["am feeling", "feels", "feel"],ans:"feel",exp:"Feel as state = stative = Present Simple."},
+{type:'mc',text:"They _____ to school by bus every day.",opts:["are going", "go", "goes"],ans:"go",exp:"Daily routine, plural = Present Simple."},
+{type:'mc',text:"He _____ a funny video online right now.",opts:["watches", "watch", "is watching"],ans:"is watching",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ for a job at the moment.",opts:["look", "looks", "is looking"],ans:"is looking",exp:"Ongoing = Present Continuous."},
+{type:'mc',text:"It _____ very cold in this region in January.",opts:["is getting", "get", "gets"],ans:"gets",exp:"General climate = Present Simple."},
+{type:'mc',text:"He _____ to his favorite song right now.",opts:["listen", "listens", "is listening"],ans:"is listening",exp:"Right now = Present Continuous."},
+{type:'mc',text:"They _____ to the park every Sunday.",opts:["are going", "go", "goes"],ans:"go",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"She _____ a lot of vegetables every day.",opts:["is eating", "eat", "eats"],ans:"eats",exp:"Daily habit = Present Simple."},
+{type:'mc',text:"Look \u2014 the cat _____ the bird!",opts:["chase", "chases", "is chasing"],ans:"is chasing",exp:"Look = right now = Present Continuous."},
+{type:'mc',text:"I _____ what you mean now.",opts:["understand", "am understanding", "understands"],ans:"understand",exp:"Understand = stative = Present Simple."},
+{type:'mc',text:"He _____ an online course this month.",opts:["takes", "take", "is taking"],ans:"is taking",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"She _____ yoga every morning before breakfast.",opts:["is doing", "do", "does"],ans:"does",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"I _____ the book you recommended right now.",opts:["read", "reads", "am reading"],ans:"am reading",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ all her vegetables. She loves them.",opts:["eats", "eat", "is eating"],ans:"eats",exp:"Habit = Present Simple."},
+{type:'mc',text:"He _____ a new house. It's exciting!",opts:["builds", "build", "is building"],ans:"is building",exp:"Ongoing project = Present Continuous."},
+{type:'mc',text:"She _____ very tired today. She looks pale.",opts:["looks", "look", "is looking"],ans:"looks",exp:"State/appearance = stative = Present Simple."},
+{type:'mc',text:"I _____ the music from your room right now!",opts:["hear", "am hearing", "hears"],ans:"hear",exp:"Hear = involuntary stative = Present Simple."},
+{type:'mc',text:"He _____ breakfast at exactly 7:30 every day.",opts:["has", "have", "is having"],ans:"has",exp:"Routine = Present Simple."},
+{type:'mc',text:"She _____ her nails right now. She'll be ready soon.",opts:["paints", "paint", "is painting"],ans:"is painting",exp:"Right now = Present Continuous."},
+{type:'mc',text:"The students _____ for their exams this week.",opts:["study", "studies", "are studying"],ans:"are studying",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"He _____ about his holidays right now. He looks happy.",opts:["thinks", "think", "is thinking"],ans:"is thinking",exp:"Active mental process right now = Present Continuous."},
+{type:'mc',text:"The company _____ its best year ever. Sales are up.",opts:["is having", "has", "have"],ans:"is having",exp:"Temporary ongoing situation = Present Continuous."},
+{type:'mc',text:"My dog _____ to be taken for a walk right now.",opts:["wants", "want", "is wanting"],ans:"wants",exp:"Want = stative = Present Simple."},
+{type:'mc',text:"She _____ the report right now for the 3 o'clock meeting.",opts:["finishes", "finish", "is finishing"],ans:"is finishing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"They _____ soccer in the schoolyard. Look!",opts:["play", "plays", "are playing"],ans:"are playing",exp:"Look! = right now = Present Continuous."},
+{type:'mc',text:"I _____ a noise coming from upstairs.",opts:["hear", "am hearing", "hears"],ans:"hear",exp:"Hear = involuntary stative = Present Simple."},
+{type:'mc',text:"She _____ to the gym three times a week.",opts:["go", "is going", "goes"],ans:"goes",exp:"Frequency = Present Simple."},
+{type:'mc',text:"He _____ a conference in London this week.",opts:["attends", "attend", "is attending"],ans:"is attending",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"The children _____ to bed at 8 p.m. on school nights.",opts:["go", "is going", "goes"],ans:"go",exp:"Routine, plural = Present Simple."},
+{type:'mc',text:"I _____ a great time here. Thanks for inviting me!",opts:["have", "am having", "has"],ans:"am having",exp:"Experiencing right now = Present Continuous."},
+{type:'mc',text:"She _____ her bag right now \u2014 she's leaving soon.",opts:["packs", "pack", "is packing"],ans:"is packing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"My little brother _____ his homework in his room right now.",opts:["does", "do", "is doing"],ans:"is doing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ coffee with milk, never black.",opts:["drinks", "drink", "is drinking"],ans:"drinks",exp:"Permanent preference = Present Simple."},
+{type:'mc',text:"He _____ his hair. He'll be out in a minute.",opts:["cuts", "cut", "is cutting"],ans:"is cutting",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ Italian at night school this year.",opts:["learns", "learn", "is learning"],ans:"is learning",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"They _____ volleyball every weekend.",opts:["plays", "play", "are playing"],ans:"play",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"I can't talk \u2014 I _____ something important.",opts:["do", "does", "am doing"],ans:"am doing",exp:"Happening right now = Present Continuous."},
+{type:'mc',text:"The children _____ their lunch in the cafeteria now.",opts:["eat", "eats", "are eating"],ans:"are eating",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ a lot when she is nervous.",opts:["talks", "talk", "is talking"],ans:"talks",exp:"Habit = Present Simple."},
+{type:'mc',text:"I _____ the answer to this math problem.",opts:["am knowing", "know", "knows"],ans:"know",exp:"Know = stative = Present Simple."},
+{type:'mc',text:"He _____ on his book all month.",opts:["works", "work", "is working"],ans:"is working",exp:"Temporary project = Present Continuous."},
+{type:'mc',text:"She _____ the dishes right now. She'll come out soon.",opts:["washes", "wash", "is washing"],ans:"is washing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"Penguins _____ in the Southern Hemisphere.",opts:["are living", "lives", "live"],ans:"live",exp:"Scientific fact, plural = Present Simple."},
+{type:'mc',text:"He _____ a bath \u2014 can he call you back?",opts:["takes", "take", "is taking"],ans:"is taking",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ math every day to prepare for the exam.",opts:["practices", "practice", "is practicing"],ans:"practices",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"Look \u2014 he _____ to the teacher and nodding.",opts:["listens", "listen", "is listening"],ans:"is listening",exp:"Look = right now = Present Continuous."},
+{type:'mc',text:"They _____ a new restaurant near our house.",opts:["opens", "open", "are opening"],ans:"are opening",exp:"Ongoing process = Present Continuous."},
+{type:'mc',text:"She _____ breakfast at 7 a.m. every day.",opts:["has", "have", "is having"],ans:"has",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"My parents _____ on a trip right now.",opts:["go", "goes", "are going"],ans:"are going",exp:"Happening now = Present Continuous."},
+{type:'mc',text:"The baby _____ beautifully right now.",opts:["sleeps", "sleep", "is sleeping"],ans:"is sleeping",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ here every summer without fail.",opts:["comes", "come", "is coming"],ans:"comes",exp:"Annual routine = Present Simple."},
+{type:'mc',text:"The chef _____ something that smells amazing.",opts:["cooks", "cook", "is cooking"],ans:"is cooking",exp:"Ongoing right now = Present Continuous."},
+{type:'mc',text:"She _____ very fast today \u2014 she must be in a hurry.",opts:["walks", "walk", "is walking"],ans:"is walking",exp:"Happening right now = Present Continuous."},
+{type:'mc',text:"He _____ science at the university.",opts:["teaches", "teach", "is teaching"],ans:"teaches",exp:"Permanent job = Present Simple."},
+{type:'mc',text:"We _____ some renovations this month.",opts:["do", "does", "are doing"],ans:"are doing",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"She _____ a really interesting book at the moment.",opts:["reads", "read", "is reading"],ans:"is reading",exp:"At the moment = Present Continuous."},
+{type:'mc',text:"He _____ in the city but visits his parents on weekends.",opts:["lives", "live", "is living"],ans:"lives",exp:"Permanent residence = Present Simple."},
+{type:'mc',text:"They _____ our street this week.",opts:["repair", "repairs", "are repairing"],ans:"are repairing",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"She _____ great today. Did she sleep well?",opts:["is looking", "look", "looks"],ans:"looks",exp:"Look = appearance = stative = Present Simple."},
+{type:'mc',text:"He _____ all his vegetables. He's so healthy.",opts:["is eating", "eat", "eats"],ans:"eats",exp:"Habit = Present Simple."},
+{type:'mc',text:"I _____ this answer is wrong.",opts:["am thinking", "thinks", "think"],ans:"think",exp:"Think (opinion) = stative = Present Simple."},
+{type:'mc',text:"They _____ a documentary right now.",opts:["watch", "watches", "are watching"],ans:"are watching",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ her cat every morning before school.",opts:["is feeding", "feed", "feeds"],ans:"feeds",exp:"Morning routine = Present Simple."},
+{type:'mc',text:"He _____ to work by bicycle every day.",opts:["is cycling", "cycle", "cycles"],ans:"cycles",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"We _____ our exams next week. The dates are set.",opts:["take", "takes", "are taking"],ans:"are taking",exp:"Arranged = Present Continuous."},
+{type:'mc',text:"She _____ a headache right now.",opts:["is having", "have", "has"],ans:"has",exp:"Have (pain/state) = stative = Present Simple."},
+{type:'mc',text:"The school _____ at 8:30 a.m. every day.",opts:["start", "is starting", "starts"],ans:"starts",exp:"Timetable = Present Simple."},
+{type:'mc',text:"I _____ the smell of fresh bread.",opts:["am loving", "loves", "love"],ans:"love",exp:"Love = stative = Present Simple."},
+{type:'mc',text:"He _____ chess very well. He wins all the time.",opts:["is playing", "play", "plays"],ans:"plays",exp:"Permanent skill = Present Simple."},
+{type:'mc',text:"She _____ hard for her exam every evening.",opts:["is studying", "study", "studies"],ans:"studies",exp:"Routine = Present Simple."},
+{type:'mc',text:"They _____ a new branch in this city.",opts:["open", "opens", "are opening"],ans:"are opening",exp:"Ongoing process = Present Continuous."},
+{type:'mc',text:"She _____ well these days since she started yoga.",opts:["sleeps", "sleep", "is sleeping"],ans:"sleeps",exp:"General improvement = Present Simple."},
+{type:'mc',text:"The audience _____ quietly now. The show is about to start.",opts:["sit", "sits", "is sitting"],ans:"is sitting",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ three cups of tea every day.",opts:["drinks", "drink", "is drinking"],ans:"drinks",exp:"Daily routine = Present Simple."},
+{type:'mc',text:"I _____ you are right. That makes sense.",opts:["am thinking", "thinks", "think"],ans:"think",exp:"Think (opinion) = stative = Present Simple."},
+{type:'mc',text:"She _____ a very hard time this month.",opts:["has", "have", "is having"],ans:"is having",exp:"Experiencing right now = Present Continuous."},
+{type:'mc',text:"He _____ to music on his headphones at the moment.",opts:["listens", "listen", "is listening"],ans:"is listening",exp:"At the moment = Present Continuous."},
+{type:'mc',text:"My grandfather _____ five languages.",opts:["is speaking", "speak", "speaks"],ans:"speaks",exp:"Permanent ability = Present Simple."},
+{type:'mc',text:"They _____ a new product range this season.",opts:["releases", "release", "are releasing"],ans:"are releasing",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"I _____ this jacket. It's my favorite.",opts:["am owning", "owns", "own"],ans:"own",exp:"Own = stative = Present Simple."},
+{type:'mc',text:"She _____ so tired \u2014 she needs a holiday.",opts:["looks", "look", "is looking"],ans:"looks",exp:"Appearance = stative = Present Simple."},
+{type:'mc',text:"The kids _____ outside in the snow right now!",opts:["play", "plays", "are playing"],ans:"are playing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ his teeth before he goes to bed.",opts:["brushes", "brush", "is brushing"],ans:"brushes",exp:"Routine = Present Simple."},
+{type:'mc',text:"I _____ you are making a mistake.",opts:["think", "am thinking", "thinks"],ans:"think",exp:"Think (opinion) = stative = Present Simple."},
+{type:'mc',text:"They _____ a new manager this month.",opts:["interview", "interviews", "are interviewing"],ans:"are interviewing",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"He _____ a lot of mistakes today \u2014 something is wrong.",opts:["is making", "makes", "make"],ans:"is making",exp:"Pattern right now = Present Continuous."},
+{type:'mc',text:"She _____ she can win. I believe in her.",opts:["believes", "believe", "is believing"],ans:"believes",exp:"Believe = stative = Present Simple."},
+{type:'mc',text:"The sun _____ so strongly today!",opts:["shines", "shine", "is shining"],ans:"is shining",exp:"Happening now = Present Continuous."},
+{type:'mc',text:"I _____ the answer now. You explained it well.",opts:["understand", "am understanding", "understands"],ans:"understand",exp:"Understand = stative = Present Simple."},
+{type:'mc',text:"He _____ a bath every evening before dinner.",opts:["takes", "take", "is taking"],ans:"takes",exp:"Routine = Present Simple."},
+{type:'mc',text:"They _____ their project in the library right now.",opts:["finish", "finishes", "are finishing"],ans:"are finishing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ his friends on Saturdays at the park.",opts:["meets", "meet", "is meeting"],ans:"meets",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"We _____ to move next month. The contract is signed.",opts:["plan", "plans", "are planning"],ans:"are planning",exp:"Arrangement = Present Continuous."},
+{type:'mc',text:"She _____ the dog for a walk every morning.",opts:["take", "is taking", "takes"],ans:"takes",exp:"Morning routine = Present Simple."},
+{type:'mc',text:"The workers _____ our road again. So noisy!",opts:["repair", "repairs", "are repairing"],ans:"are repairing",exp:"Ongoing right now = Present Continuous."},
+{type:'mc',text:"He _____ what he wants. He's very decisive.",opts:["knows", "know", "is knowing"],ans:"knows",exp:"Know = stative = Present Simple."},
+{type:'mc',text:"She _____ to live abroad one day.",opts:["wants", "want", "is wanting"],ans:"wants",exp:"Want = stative = Present Simple."},
+{type:'mc',text:"I _____ something burning! Can you smell it?",opts:["smell", "am smelling", "smells"],ans:"smell",exp:"Smell (involuntary) = stative = Present Simple."},
+{type:'mc',text:"She _____ the piano beautifully.",opts:["plays", "play", "is playing"],ans:"plays",exp:"Permanent skill = Present Simple."},
+{type:'mc',text:"My parents _____ for a holiday this year.",opts:["saves", "save", "are saving"],ans:"are saving",exp:"Temporary goal = Present Continuous."},
+{type:'mc',text:"She _____ French and Italian. She lived in Europe.",opts:["speaks", "speak", "is speaking"],ans:"speaks",exp:"Permanent ability = Present Simple."},
+{type:'mc',text:"I _____ a great idea right now!",opts:["has", "have", "am having"],ans:"am having",exp:"Experiencing right now = Present Continuous."},
+{type:'mc',text:"He _____ an important call right now. Please don't disturb.",opts:["takes", "take", "is taking"],ans:"is taking",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ in her hometown every summer.",opts:["performs", "perform", "is performing"],ans:"performs",exp:"Annual routine = Present Simple."},
+{type:'mc',text:"I _____ this part of town very well. I grew up here.",opts:["know", "am knowing", "knows"],ans:"know",exp:"Know = stative = Present Simple."},
+{type:'mc',text:"He _____ very well under pressure.",opts:["work", "works", "is working"],ans:"works",exp:"General ability = Present Simple."},
+{type:'mc',text:"They _____ for the bus in the rain right now.",opts:["wait", "waits", "are waiting"],ans:"are waiting",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ five days a week at the gym.",opts:["trains", "train", "is training"],ans:"trains",exp:"Routine = Present Simple."},
+{type:'mc',text:"I _____ a strange noise. Can you hear it?",opts:["hear", "am hearing", "hears"],ans:"hear",exp:"Hear = involuntary = stative = Present Simple."},
+{type:'mc',text:"They _____ so well at the tournament this week.",opts:["perform", "performs", "are performing"],ans:"are performing",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"She _____ something right now and can't be interrupted.",opts:["types", "type", "is typing"],ans:"is typing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ new employees this month.",opts:["trains", "train", "is training"],ans:"is training",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"The factory _____ a lot of pollution right now.",opts:["produces", "produce", "is producing"],ans:"is producing",exp:"Ongoing = Present Continuous."},
+{type:'mc',text:"I _____ the film you recommended. It's great!",opts:["enjoy", "enjoys", "am enjoying"],ans:"am enjoying",exp:"Experiencing right now = Present Continuous."},
+{type:'mc',text:"They _____ every year to the same beach.",opts:["go", "goes", "are going"],ans:"go",exp:"Annual routine = Present Simple."},
+{type:'mc',text:"She _____ on her thesis. It's due next month.",opts:["works", "work", "is working"],ans:"is working",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"He _____ what he is doing. Don't worry.",opts:["knows", "know", "is knowing"],ans:"knows",exp:"Know = stative = Present Simple."},
+{type:'mc',text:"The team _____ really well together this season.",opts:["plays", "play", "is playing"],ans:"is playing",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"I _____ that this is the best solution.",opts:["believe", "am believing", "believes"],ans:"believe",exp:"Believe = stative = Present Simple."},
+{type:'mc',text:"She _____ piano lessons every Saturday.",opts:["takes", "take", "is taking"],ans:"takes",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"Look at her \u2014 she _____ so hard!",opts:["studies", "study", "is studying"],ans:"is studying",exp:"Look at her = right now = Present Continuous."},
+{type:'mc',text:"I _____ this is wrong.",opts:["am thinking", "thinks", "think"],ans:"think",exp:"Think (opinion) = stative = Present Simple."},
+{type:'mc',text:"They _____ a new office building right now.",opts:["construct", "constructs", "are constructing"],ans:"are constructing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"The journalist _____ a story about the local elections.",opts:["writes", "write", "is writing"],ans:"is writing",exp:"Ongoing = Present Continuous."},
+{type:'mc',text:"He _____ to his friend on the phone. He's in his room.",opts:["talks", "talk", "is talking"],ans:"is talking",exp:"Right now = Present Continuous."},
+{type:'mc',text:"I _____ fish. It smells bad.",opts:["hate", "am hating", "hates"],ans:"hate",exp:"Hate = stative = Present Simple."},
+{type:'mc',text:"She _____ a book every week. She's an avid reader.",opts:["reads", "read", "is reading"],ans:"reads",exp:"Habit = Present Simple."},
+{type:'mc',text:"He _____ his best this semester.",opts:["does", "do", "is doing"],ans:"is doing",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"The children _____ their vegetables tonight. It's a miracle!",opts:["are eating", "eat", "eats"],ans:"are eating",exp:"Happening now = Present Continuous."},
+{type:'mc',text:"I _____ to get a new job. I'm tired of this one.",opts:["want", "am wanting", "wants"],ans:"want",exp:"Want = stative = Present Simple."},
+{type:'mc',text:"She _____ a walk every evening after dinner.",opts:["takes", "take", "is taking"],ans:"takes",exp:"Routine = Present Simple."},
+{type:'mc',text:"The sales team _____ very hard this quarter to hit the target.",opts:["works", "work", "is working"],ans:"is working",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"He _____ better and better at cooking. Practice helps!",opts:["gets", "get", "is getting"],ans:"is getting",exp:"Ongoing improvement = Present Continuous."},
+{type:'mc',text:"They _____ a new approach to the problem right now.",opts:["try", "tries", "are trying"],ans:"are trying",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ very much about her future.",opts:["thinks", "think", "is thinking"],ans:"is thinking",exp:"Active mental process right now = Present Continuous."},
+{type:'mc',text:"He _____ the drums in a band on weekends.",opts:["plays", "play", "is playing"],ans:"plays",exp:"Weekend routine = Present Simple."},
+{type:'mc',text:"I _____ how to solve this. Give me a minute.",opts:["think", "am thinking", "thinks"],ans:"am thinking",exp:"Active process right now = Present Continuous."},
+{type:'mc',text:"They _____ great progress this year.",opts:["make", "makes", "are making"],ans:"are making",exp:"Temporary ongoing = Present Continuous."},
+{type:'mc',text:"She _____ lunch at 1 p.m. every day.",opts:["has", "have", "is having"],ans:"has",exp:"Routine = Present Simple."},
+{type:'mc',text:"Look \u2014 he _____ the paper and smiling!",opts:["reads", "read", "is reading"],ans:"is reading",exp:"Look = right now = Present Continuous."},
+{type:'mc',text:"I _____ this caf\u00e9. I come here every week.",opts:["love", "am loving", "loves"],ans:"love",exp:"Love = stative = Present Simple."},
+{type:'mc',text:"They _____ a marathon next Sunday. Training is complete.",opts:["run", "runs", "are running"],ans:"are running",exp:"Arrangement = Present Continuous."},
+{type:'mc',text:"He _____ a new skill this month \u2014 coding.",opts:["learns", "learn", "is learning"],ans:"is learning",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"The professor _____ a very interesting lecture right now.",opts:["gives", "give", "is giving"],ans:"is giving",exp:"Right now = Present Continuous."},
+{type:'mc',text:"I _____ this is a bad idea.",opts:["think", "am thinking", "thinks"],ans:"think",exp:"Think (opinion) = stative = Present Simple."},
+{type:'mc',text:"They _____ their house this summer. Big plans!",opts:["renovate", "renovates", "are renovating"],ans:"are renovating",exp:"Temporary = Present Continuous."},
+{type:'mc',text:"She _____ her new colleague today. First day of work.",opts:["meets", "meet", "is meeting"],ans:"is meeting",exp:"Happening today = Present Continuous."},
+{type:'mc',text:"I _____ to classical music when I study.",opts:["listen", "listens", "am listening"],ans:"listen",exp:"Habit = Present Simple."},
+{type:'mc',text:"The cat _____ in the sun right now. So peaceful.",opts:["lies", "lie", "is lying"],ans:"is lying",exp:"Right now = Present Continuous."},
+{type:'mc',text:"She _____ at this company for five years now.",opts:["works", "work", "is working"],ans:"works",exp:"Ongoing fact = Present Simple."},
+{type:'mc',text:"He _____ his project right now in his study.",opts:["finishes", "finish", "is finishing"],ans:"is finishing",exp:"Right now = Present Continuous."},
+{type:'mc',text:"I _____ sushi. It's delicious.",opts:["love", "am loving", "loves"],ans:"love",exp:"Love = stative = Present Simple."},
+{type:'mc',text:"Look \u2014 she _____ to the front of the class!",opts:["walk", "walks", "is walking"],ans:"is walking",exp:"Look = right now = Present Continuous."},
+{type:'mc',text:"He always _____ to the same songs on his morning run.",opts:["listens", "listen", "is listening"],ans:"listens",exp:"Always + routine = Present Simple."},
+{type:'mc',text:"They _____ a fantastic concert right now. I wish I was there!",opts:["give", "gives", "are giving"],ans:"are giving",exp:"Right now = Present Continuous."},
+{type:'mc',text:"I _____ this smell everywhere I go.",opts:["notice", "am noticing", "notices"],ans:"notice",exp:"Notice = stative = Present Simple."},
+{type:'mc',text:"He _____ the job description right now to apply.",opts:["reads", "read", "is reading"],ans:"is reading",exp:"Right now = Present Continuous."},
+{type:'mc',text:"They _____ a new language together every week.",opts:["learn", "learns", "are learning"],ans:"learn",exp:"Weekly routine = Present Simple."},
+{type:'mc',text:"He _____ very cold right now. Can we close the window?",opts:["feels", "feel", "is feeling"],ans:"feels",exp:"Feel as state = Present Simple."},
+{type:'mc',text:"I _____ your help. Can you spare 10 minutes?",opts:["need", "am needing", "needs"],ans:"need",exp:"Need = stative = Present Simple."},
+{type:'mc',text:"She _____ an amazing speech right now. Everyone is impressed.",opts:["gives", "give", "is giving"],ans:"is giving",exp:"Right now = Present Continuous."},
+{type:'mc',text:"He _____ his suitcase right now. The taxi comes in 20 minutes.",opts:["packs", "pack", "is packing"],ans:"is packing",exp:"Right now = Present Continuous."},
+{type:'fill',text:"Tom usually _____ (wake up) at 7 a.m.",ans:["wakes up"],exp:"Usually = routine = Present Simple."},
+{type:'fill',text:"They _____ (not / watch) TV right now.",ans:["aren't watching", "are not watching"],exp:"Negative Present Continuous."},
+{type:'fill',text:"Shh! The baby _____ (sleep) right now.",ans:["is sleeping"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"We _____ (not / eat) meat. We are vegetarians.",ans:["don't eat", "do not eat"],exp:"Permanent habit = Present Simple negative."},
+{type:'fill',text:"I can't talk now. I _____ (have) a shower.",ans:["am having"],exp:"Happening now = Present Continuous."},
+{type:'fill',text:"Water _____ (boil) at 100 degrees Celsius.",ans:["boils"],exp:"Scientific fact = Present Simple."},
+{type:'fill',text:"She _____ (study) for her test this week.",ans:["is studying"],exp:"This week = temporary ongoing = Present Continuous."},
+{type:'fill',text:"My dad _____ (read) the newspaper every Sunday.",ans:["reads"],exp:"Weekly routine = Present Simple."},
+{type:'fill',text:"The kids _____ (play) in the yard. I can hear them!",ans:["are playing"],exp:"Audible right now = Present Continuous."},
+{type:'fill',text:"He _____ (not / like) spicy food.",ans:["doesn't like", "does not like"],exp:"Permanent preference = Present Simple negative."},
+{type:'fill',text:"I _____ (think) about what to eat for lunch.",ans:["am thinking"],exp:"Active thought right now = Present Continuous."},
+{type:'fill',text:"She _____ (always / forget) her keys.",ans:["always forgets"],exp:"Always + routine = Present Simple."},
+{type:'fill',text:"We _____ (visit) Paris next month. It's all booked!",ans:["are visiting"],exp:"Fixed arrangement = Present Continuous."},
+{type:'fill',text:"He _____ (work) as a doctor at the city hospital.",ans:["works"],exp:"Permanent job = Present Simple."},
+{type:'fill',text:"Listen! Someone _____ (knock) at the door.",ans:["is knocking"],exp:"Listen! = right now = Present Continuous."},
+{type:'fill',text:"She _____ (not / speak) French very well yet.",ans:["doesn't speak", "does not speak"],exp:"Ability negative = Present Simple."},
+{type:'fill',text:"I _____ (go) to the gym three times a week.",ans:["go"],exp:"Frequency = Present Simple."},
+{type:'fill',text:"They _____ (build) a new school in our street right now.",ans:["are building"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"My cat _____ (sleep) on the sofa every afternoon.",ans:["sleeps"],exp:"Daily habit = Present Simple."},
+{type:'fill',text:"He _____ (write) an email at the moment.",ans:["is writing"],exp:"At the moment = Present Continuous."},
+{type:'fill',text:"She _____ (not / watch) the news every day.",ans:["doesn't watch", "does not watch"],exp:"Routine negative = Present Simple."},
+{type:'fill',text:"The stars _____ (shine) so brightly tonight.",ans:["are shining"],exp:"Happening now = Present Continuous."},
+{type:'fill',text:"Bees _____ (collect) nectar from flowers.",ans:["collect"],exp:"Natural behavior, plural = Present Simple."},
+{type:'fill',text:"He _____ (not / do) his homework right now \u2014 he's gaming.",ans:["isn't doing", "is not doing"],exp:"Negative Present Continuous."},
+{type:'fill',text:"I _____ (not / understand) this question at all.",ans:["don't understand", "do not understand"],exp:"Understand = stative = Present Simple negative."},
+{type:'fill',text:"She _____ (wear) a red dress today.",ans:["is wearing"],exp:"What she's wearing now = Present Continuous."},
+{type:'fill',text:"My brother _____ (practice) guitar every evening.",ans:["practices"],exp:"Routine = Present Simple."},
+{type:'fill',text:"The company _____ (launch) a new product this month.",ans:["is launching"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"Plants _____ (need) sunlight and water to grow.",ans:["need"],exp:"Scientific fact = Present Simple."},
+{type:'fill',text:"He _____ (not / pay) attention in class right now.",ans:["isn't paying", "is not paying"],exp:"Negative Present Continuous."},
+{type:'fill',text:"They _____ (argue) again. I can hear them!",ans:["are arguing"],exp:"Audible right now = Present Continuous."},
+{type:'fill',text:"She _____ (take) the bus to work every day.",ans:["takes"],exp:"Daily routine = Present Simple."},
+{type:'fill',text:"I _____ (read) a really interesting book this week.",ans:["am reading"],exp:"This week = temporary ongoing = Present Continuous."},
+{type:'fill',text:"He _____ (usually / eat) lunch at his desk.",ans:["usually eats"],exp:"Usually = routine = Present Simple."},
+{type:'fill',text:"The mechanic _____ (fix) our car right now.",ans:["is fixing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"She _____ (not / drink) coffee. She prefers tea.",ans:["doesn't drink", "does not drink"],exp:"Permanent preference = Present Simple negative."},
+{type:'fill',text:"They _____ (learn) to dance this semester.",ans:["are learning"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"My mum _____ (cook) dinner right now.",ans:["is cooking"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"It _____ (rain) every afternoon here in summer.",ans:["rains"],exp:"Regular pattern = Present Simple."},
+{type:'fill',text:"The dog _____ (bark) at the postman. Every. Single. Day.",ans:["barks"],exp:"Routine = Present Simple."},
+{type:'fill',text:"I _____ (not / know) the answer to that question.",ans:["don't know", "do not know"],exp:"Know = stative = Present Simple negative."},
+{type:'fill',text:"She _____ (type) a report right now.",ans:["is typing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"He _____ (not / want) to go to the party.",ans:["doesn't want", "does not want"],exp:"Want = stative = Present Simple negative."},
+{type:'fill',text:"We _____ (renovate) our kitchen this month.",ans:["are renovating"],exp:"Temporary project = Present Continuous."},
+{type:'fill',text:"The store _____ (open) at 9 every morning.",ans:["opens"],exp:"Timetable = Present Simple."},
+{type:'fill',text:"She _____ (not / feel) well today.",ans:["isn't feeling", "is not feeling", "doesn't feel", "does not feel"],exp:"Temporary state or habit \u2014 both forms accepted."},
+{type:'fill',text:"He _____ (run) in the park most mornings.",ans:["runs"],exp:"Routine = Present Simple."},
+{type:'fill',text:"They _____ (move) to a new house next week. Boxes are packed.",ans:["are moving"],exp:"Fixed arrangement = Present Continuous."},
+{type:'fill',text:"The children _____ (not / listen) to the teacher right now.",ans:["aren't listening", "are not listening"],exp:"Negative Present Continuous."},
+{type:'fill',text:"I _____ (want) a glass of water, please.",ans:["want"],exp:"Want = stative = Present Simple."},
+{type:'fill',text:"She _____ (help) her mum in the garden at the moment.",ans:["is helping"],exp:"At the moment = Present Continuous."},
+{type:'fill',text:"He _____ (not / come) to school by bus \u2014 he walks.",ans:["doesn't come", "does not come"],exp:"Routine negative = Present Simple."},
+{type:'fill',text:"They _____ (have) lunch right now in the cafeteria.",ans:["are having"],exp:"Experiencing right now = Present Continuous."},
+{type:'fill',text:"She _____ (know) all the answers. She studied hard.",ans:["knows"],exp:"Know = stative = Present Simple."},
+{type:'fill',text:"It _____ (snow) outside right now \u2014 look!",ans:["is snowing"],exp:"Look! = right now = Present Continuous."},
+{type:'fill',text:"The teacher _____ (explain) the lesson at this moment.",ans:["is explaining"],exp:"At this moment = Present Continuous."},
+{type:'fill',text:"She _____ (not / understand) why he is upset.",ans:["doesn't understand", "does not understand"],exp:"Understand = stative = Present Simple negative."},
+{type:'fill',text:"He _____ (practice) his speech for tomorrow right now.",ans:["is practicing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"They _____ (not / play) computer games every day.",ans:["don't play", "do not play"],exp:"Routine negative = Present Simple."},
+{type:'fill',text:"I _____ (love) this song! Turn it up!",ans:["love"],exp:"Love = stative = Present Simple."},
+{type:'fill',text:"The athlete _____ (train) very hard this month.",ans:["is training"],exp:"Temporary ongoing = Present Continuous."},
+{type:'fill',text:"She _____ (not / live) in Paris anymore.",ans:["doesn't live", "does not live"],exp:"Permanent state negative = Present Simple."},
+{type:'fill',text:"He _____ (look) for his glasses. He can't find them.",ans:["is looking"],exp:"Ongoing activity = Present Continuous."},
+{type:'fill',text:"We _____ (watch) a documentary right now.",ans:["are watching"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"She _____ (smell) something burning in the kitchen!",ans:["smells"],exp:"Smell = involuntary stative = Present Simple."},
+{type:'fill',text:"They _____ (not / speak) to each other this week.",ans:["aren't speaking", "are not speaking"],exp:"Temporary = Present Continuous negative."},
+{type:'fill',text:"He _____ (drive) to work every day.",ans:["drives"],exp:"Daily routine = Present Simple."},
+{type:'fill',text:"I _____ (feel) much better today, thank you!",ans:["feel"],exp:"Feel as state = Present Simple."},
+{type:'fill',text:"She _____ (write) in her diary every night.",ans:["writes"],exp:"Nightly routine = Present Simple."},
+{type:'fill',text:"They _____ (try) a new approach this quarter.",ans:["are trying"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"The baby _____ (not / cry) anymore. He fell asleep.",ans:["isn't crying", "is not crying"],exp:"Negative Present Continuous."},
+{type:'fill',text:"He _____ (believe) in second chances.",ans:["believes"],exp:"Believe = stative = Present Simple."},
+{type:'fill',text:"She _____ (bake) cookies for the class right now.",ans:["is baking"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"They _____ (think) about moving to a bigger flat.",ans:["are thinking"],exp:"Active mental process ongoing = Present Continuous."},
+{type:'fill',text:"It _____ (get) dark outside. We should go in.",ans:["is getting"],exp:"Happening now = Present Continuous."},
+{type:'fill',text:"He _____ (usually / wake) up before everyone else.",ans:["usually wakes"],exp:"Usually = routine = Present Simple."},
+{type:'fill',text:"The mechanic _____ (check) the brakes right now.",ans:["is checking"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"I _____ (see) your point. That makes sense.",ans:["see"],exp:"See = stative (understand) = Present Simple."},
+{type:'fill',text:"They _____ (prepare) for the concert all week.",ans:["are preparing"],exp:"Temporary ongoing = Present Continuous."},
+{type:'fill',text:"She _____ (not / work) today \u2014 she's on holiday.",ans:["isn't working", "is not working"],exp:"Negative Present Continuous."},
+{type:'fill',text:"He _____ (read) very fast. He finishes a book a week.",ans:["reads"],exp:"Ability/habit = Present Simple."},
+{type:'fill',text:"We _____ (wait) for the bus right now.",ans:["are waiting"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"I _____ (not / remember) his phone number.",ans:["don't remember", "do not remember"],exp:"Remember = stative = Present Simple negative."},
+{type:'fill',text:"She _____ (send) an important email at the moment.",ans:["is sending"],exp:"At the moment = Present Continuous."},
+{type:'fill',text:"He _____ (not / like) horror movies.",ans:["doesn't like", "does not like"],exp:"Preference = stative = Present Simple negative."},
+{type:'fill',text:"They _____ (travel) around Europe this summer.",ans:["are traveling", "are travelling"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"She _____ (draw) a picture for her friend right now.",ans:["is drawing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"He _____ (need) more time to finish the project.",ans:["needs"],exp:"Need = stative = Present Simple."},
+{type:'fill',text:"We _____ (not / have) any milk left.",ans:["don't have", "do not have"],exp:"Have = stative (possession) = Present Simple negative."},
+{type:'fill',text:"The director _____ (film) a new movie this season.",ans:["is filming"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"She _____ (love) animals, especially dogs.",ans:["loves"],exp:"Love = stative = Present Simple."},
+{type:'fill',text:"I _____ (write) my history essay tonight.",ans:["am writing"],exp:"Happening now = Present Continuous."},
+{type:'fill',text:"They _____ (not / know) the truth yet.",ans:["don't know", "do not know"],exp:"Know = stative = Present Simple negative."},
+{type:'fill',text:"He _____ (swim) 50 laps every morning.",ans:["swims"],exp:"Routine = Present Simple."},
+{type:'fill',text:"She _____ (chat) with her friend on the phone right now.",ans:["is chatting"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"The team _____ (work) on a solution as we speak.",ans:["is working"],exp:"Ongoing right now = Present Continuous."},
+{type:'fill',text:"My parents _____ (travel) to Japan next week.",ans:["are traveling", "are travelling"],exp:"Arrangement = Present Continuous."},
+{type:'fill',text:"He _____ (not / eat) breakfast every day \u2014 only on weekends.",ans:["doesn't eat", "does not eat"],exp:"Routine negative = Present Simple."},
+{type:'fill',text:"I _____ (not / see) what the problem is.",ans:["don't see", "do not see"],exp:"See = stative = Present Simple negative."},
+{type:'fill',text:"She _____ (pack) her bags. She leaves tomorrow.",ans:["is packing"],exp:"Ongoing right now = Present Continuous."},
+{type:'fill',text:"They _____ (work) very hard this term.",ans:["are working"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"He _____ (know) how to fix computers.",ans:["knows"],exp:"Permanent ability = Present Simple."},
+{type:'fill',text:"The kids _____ (not / play) outside right now \u2014 it's raining.",ans:["aren't playing", "are not playing"],exp:"Negative Present Continuous."},
+{type:'fill',text:"She _____ (taste) the soup to see if it needs salt.",ans:["is tasting"],exp:"Active tasting action = Present Continuous."},
+{type:'fill',text:"He _____ (usually / arrive) late to class.",ans:["usually arrives"],exp:"Usually = routine = Present Simple."},
+{type:'fill',text:"They _____ (meet) the client at 3 p.m. today.",ans:["are meeting"],exp:"Arrangement = Present Continuous."},
+{type:'fill',text:"I _____ (not / agree) with your decision.",ans:["don't agree", "do not agree"],exp:"Agree = stative = Present Simple negative."},
+{type:'fill',text:"She _____ (run) in the park. She looks so fast!",ans:["is running"],exp:"Observable right now = Present Continuous."},
+{type:'fill',text:"He _____ (teach) us about Shakespeare this term.",ans:["is teaching"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"They _____ (speak) too loudly in the library right now.",ans:["are speaking"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"My dog _____ (not / like) the rain.",ans:["doesn't like", "does not like"],exp:"Preference = stative = Present Simple negative."},
+{type:'fill',text:"I _____ (work) from home this week.",ans:["am working"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"She _____ (own) a small bakery in the town center.",ans:["owns"],exp:"Ownership = stative = Present Simple."},
+{type:'fill',text:"He _____ (look) very pale. Is he okay?",ans:["looks"],exp:"Appearance = stative = Present Simple."},
+{type:'fill',text:"They _____ (launch) the app next month.",ans:["are launching"],exp:"Arrangement = Present Continuous."},
+{type:'fill',text:"She _____ (not / remember) where she put her phone.",ans:["doesn't remember", "does not remember"],exp:"Remember = stative = Present Simple negative."},
+{type:'fill',text:"I _____ (try) to explain it simply.",ans:["am trying"],exp:"Ongoing action = Present Continuous."},
+{type:'fill',text:"The team _____ (lose) at the moment. They need to do better.",ans:["is losing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"He _____ (not / remember) where he put his passport.",ans:["doesn't remember", "does not remember"],exp:"Remember = stative = Present Simple negative."},
+{type:'fill',text:"I _____ (think) about quitting my job.",ans:["am thinking"],exp:"Active process = Present Continuous."},
+{type:'fill',text:"She _____ (always / arrive) on time. She's very punctual.",ans:["always arrives"],exp:"Always + routine = Present Simple."},
+{type:'fill',text:"They _____ (renovate) their flat this month.",ans:["are renovating"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"He _____ (not / agree) with what you said.",ans:["doesn't agree", "does not agree"],exp:"Agree = stative = Present Simple negative."},
+{type:'fill',text:"I _____ (feel) a bit sick right now.",ans:["am feeling", "feel"],exp:"Temporary state \u2014 both forms accepted."},
+{type:'fill',text:"She _____ (meet) with her supervisor at the moment.",ans:["is meeting"],exp:"At the moment = Present Continuous."},
+{type:'fill',text:"They _____ (not / understand) the instructions.",ans:["don't understand", "do not understand"],exp:"Understand = stative = Present Simple negative."},
+{type:'fill',text:"He _____ (play) a guitar solo right now. It sounds amazing.",ans:["is playing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"We _____ (wait) for the results. It's nerve-wracking.",ans:["are waiting"],exp:"Ongoing = Present Continuous."},
+{type:'fill',text:"She _____ (not / want) to come with us tonight.",ans:["doesn't want", "does not want"],exp:"Want = stative = Present Simple negative."},
+{type:'fill',text:"He _____ (teach) the advanced class this term.",ans:["is teaching"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"I _____ (love) spending time in nature.",ans:["love"],exp:"Love = stative = Present Simple."},
+{type:'fill',text:"They _____ (sign) the contract today. It's official.",ans:["are signing"],exp:"Happening today = Present Continuous."},
+{type:'fill',text:"She _____ (not / feel) well today. She might go home early.",ans:["isn't feeling", "is not feeling", "doesn't feel", "does not feel"],exp:"Temporary state \u2014 both forms accepted."},
+{type:'fill',text:"He _____ (complete) his application right now.",ans:["is completing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"The team _____ (practice) every day before the big game.",ans:["practices"],exp:"Routine = Present Simple."},
+{type:'fill',text:"I _____ (read) to my son every night before bed.",ans:["read"],exp:"Nightly routine = Present Simple."},
+{type:'fill',text:"She _____ (not / drink) alcohol at all.",ans:["doesn't drink", "does not drink"],exp:"Permanent habit = Present Simple negative."},
+{type:'fill',text:"The cat _____ (chase) a bird in the yard!",ans:["is chasing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"They _____ (expand) into new markets this year.",ans:["are expanding"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"I _____ (not / believe) what I'm hearing.",ans:["don't believe", "do not believe"],exp:"Believe = stative = Present Simple negative."},
+{type:'fill',text:"He _____ (cycle) to work every day to stay fit.",ans:["cycles"],exp:"Daily routine = Present Simple."},
+{type:'fill',text:"She _____ (look) for her lost dog right now.",ans:["is looking"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"They _____ (launch) a new product line this quarter.",ans:["are launching"],exp:"Temporary = Present Continuous."},
+{type:'fill',text:"He _____ (own) a restaurant in the city centre.",ans:["owns"],exp:"Own = stative = Present Simple."},
+{type:'fill',text:"I _____ (not / know) his address.",ans:["don't know", "do not know"],exp:"Know = stative = Present Simple negative."},
+{type:'fill',text:"She _____ (write) her novel every morning for two hours.",ans:["writes"],exp:"Routine = Present Simple."},
+{type:'fill',text:"We _____ (finish) the report right now.",ans:["are finishing"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"He _____ (seem) upset about something today.",ans:["seems"],exp:"Seem = stative = Present Simple."},
+{type:'fill',text:"I _____ (smell) something amazing. Are you cooking?",ans:["smell"],exp:"Smell = involuntary = stative = Present Simple."},
+{type:'fill',text:"They _____ (rehearse) the play every evening this week.",ans:["are rehearsing"],exp:"Temporary ongoing = Present Continuous."},
+{type:'fill',text:"She _____ (see) a therapist this month to manage stress.",ans:["is seeing"],exp:"Temporary arrangement = Present Continuous."},
+{type:'fill',text:"He _____ (not / pay) attention right now.",ans:["isn't paying", "is not paying"],exp:"Negative Present Continuous."},
+{type:'fill',text:"I _____ (hear) what you're saying but I disagree.",ans:["hear"],exp:"Hear = stative = Present Simple."},
+{type:'fill',text:"They _____ (not / come) to the party. They're too tired.",ans:["aren't coming", "are not coming"],exp:"Arrangement cancelled = Present Continuous negative."},
+{type:'fill',text:"She _____ (need) more time to finish her work.",ans:["needs"],exp:"Need = stative = Present Simple."},
+{type:'fill',text:"He _____ (interview) for a new job today.",ans:["is interviewing"],exp:"Happening today = Present Continuous."},
+{type:'fill',text:"I _____ (think) about buying a new laptop.",ans:["am thinking"],exp:"Active ongoing consideration = Present Continuous."},
+{type:'fill',text:"The baby _____ (grow) so fast! She's already walking.",ans:["is growing"],exp:"Observable ongoing change = Present Continuous."},
+{type:'fill',text:"She _____ (prefer) to sit near the window.",ans:["prefers"],exp:"Prefer = stative = Present Simple."},
+{type:'fill',text:"They _____ (build) a new bridge over the river.",ans:["are building"],exp:"Ongoing project = Present Continuous."},
+{type:'fill',text:"I _____ (wonder) if you could help me.",ans:["am wondering"],exp:"Polite ongoing thought = Present Continuous."},
+{type:'fill',text:"He _____ (try) his best in every lesson.",ans:["tries"],exp:"Routine = Present Simple."},
+{type:'fill',text:"She _____ (cook) something that smells delicious.",ans:["is cooking"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"They _____ (not / understand) why the project failed.",ans:["don't understand", "do not understand"],exp:"Understand = stative = Present Simple negative."},
+{type:'fill',text:"I _____ (work) on something urgent. Call you back soon!",ans:["am working"],exp:"Right now = Present Continuous."},
+{type:'fill',text:"She _____ (always / smile) when she sees him.",ans:["always smiles"],exp:"Always + routine = Present Simple."},
+{type:'fill',text:"He _____ (not / play) in today's match. He's injured.",ans:["isn't playing", "is not playing"],exp:"Temporary = Present Continuous negative."},
+{type:'error',text:"\"She is knowing the answer.\"",ans:"Wrong",exp:"Know is stative. Correct: She knows the answer."},
+{type:'error',text:"\"He is playing football every Saturday.\"",ans:"Wrong",exp:"Every Saturday = routine. Correct: He plays football every Saturday."},
+{type:'error',text:"\"They are studying for their exam this week.\"",ans:"Correct",exp:"This week = temporary ongoing = Present Continuous."},
+{type:'error',text:"\"I am going to school every morning.\"",ans:"Wrong",exp:"Every morning = routine. Correct: I go to school every morning."},
+{type:'error',text:"\"Look! He runs so fast!\"",ans:"Wrong",exp:"Look! = right now. Correct: Look! He is running so fast!"},
+{type:'error',text:"\"She doesn't like coffee.\"",ans:"Correct",exp:"Like = stative, permanent preference = Present Simple."},
+{type:'error',text:"\"They are having a car. It's red.\"",ans:"Wrong",exp:"Have (possession) = stative. Correct: They have a car."},
+{type:'error',text:"\"I am not understanding you. Please speak slowly.\"",ans:"Wrong",exp:"Understand = stative. Correct: I don't understand you."},
+{type:'error',text:"\"She is teaching English at that school.\"",ans:"Correct",exp:"Current ongoing job = Present Continuous."},
+{type:'error',text:"\"The children play in the garden right now.\"",ans:"Wrong",exp:"Right now = Present Continuous. Correct: The children are playing in the garden right now."},
+{type:'error',text:"\"Water is boiling at 100 degrees Celsius.\"",ans:"Wrong",exp:"Scientific fact = Present Simple. Correct: Water boils at 100 degrees Celsius."},
+{type:'error',text:"\"He works from home these days.\"",ans:"Correct",exp:"These days = current temporary situation. Present Simple is natural here."},
+{type:'error',text:"\"I am wanting a pizza right now.\"",ans:"Wrong",exp:"Want = stative. Correct: I want a pizza right now."},
+{type:'error',text:"\"She is always forgetting her homework.\"",ans:"Correct",exp:"Always + Continuous = annoying repeated habit."},
+{type:'error',text:"\"The sun rises in the east.\"",ans:"Correct",exp:"Geographical fact = Present Simple."},
+{type:'error',text:"\"He is seeming tired today.\"",ans:"Wrong",exp:"Seem = stative. Correct: He seems tired today."},
+{type:'error',text:"\"We are visiting our grandparents next Sunday. It's planned.\"",ans:"Correct",exp:"Fixed arrangement = Present Continuous."},
+{type:'error',text:"\"She sings in the shower at the moment.\"",ans:"Wrong",exp:"At the moment = Present Continuous. Correct: She is singing in the shower at the moment."},
+{type:'error',text:"\"I believe you. Don't worry.\"",ans:"Correct",exp:"Believe = stative = Present Simple."},
+{type:'error',text:"\"He is knowing how to drive a car.\"",ans:"Wrong",exp:"Know = stative. Correct: He knows how to drive a car."},
+{type:'error',text:"\"Listen! The birds are singing beautifully.\"",ans:"Correct",exp:"Listen! = right now = Present Continuous."},
+{type:'error',text:"\"Dogs is barking at night sometimes.\"",ans:"Wrong",exp:"Two errors: dogs is plural (no -s on verb) + general habit. Correct: Dogs bark at night sometimes."},
+{type:'error',text:"\"She is loving chocolate ice cream.\"",ans:"Wrong",exp:"Love = stative. Correct: She loves chocolate ice cream."},
+{type:'error',text:"\"He doesn't eat breakfast on weekdays.\"",ans:"Correct",exp:"Routine negative = Present Simple."},
+{type:'error',text:"\"I am not liking this weather.\"",ans:"Wrong",exp:"Like = stative. Correct: I don't like this weather."},
+{type:'error',text:"\"They are playing tennis right now.\"",ans:"Correct",exp:"Right now = Present Continuous."},
+{type:'error',text:"\"She is having blue eyes.\"",ans:"Wrong",exp:"Have (appearance) = stative. Correct: She has blue eyes."},
+{type:'error',text:"\"He always brushes his teeth before bed.\"",ans:"Correct",exp:"Always + routine = Present Simple."},
+{type:'error',text:"\"I am needing your help right now.\"",ans:"Wrong",exp:"Need = stative. Correct: I need your help right now."},
+{type:'error',text:"\"She is cooking dinner at the moment.\"",ans:"Correct",exp:"At the moment = Present Continuous."},
+{type:'error',text:"\"The class starts at 8 a.m. every day.\"",ans:"Correct",exp:"Timetable = Present Simple."},
+{type:'error',text:"\"He is always losing his phone!\"",ans:"Correct",exp:"Always + Continuous = annoying habit."},
+{type:'error',text:"\"She is resembling her mother a lot.\"",ans:"Wrong",exp:"Resemble = stative. Correct: She resembles her mother a lot."},
+{type:'error',text:"\"I am thinking this is a great idea.\"",ans:"Wrong",exp:"Think (opinion) = stative. Correct: I think this is a great idea."},
+{type:'error',text:"\"They are working on the project all week.\"",ans:"Correct",exp:"Temporary ongoing = Present Continuous."},
+{type:'error',text:"\"The dog bites! Be careful.\"",ans:"Correct",exp:"General habit/warning = Present Simple."},
+{type:'error',text:"\"She is preferring tea to coffee.\"",ans:"Wrong",exp:"Prefer = stative. Correct: She prefers tea to coffee."},
+{type:'error',text:"\"He is wearing a blue jacket today.\"",ans:"Correct",exp:"What he's wearing right now = Present Continuous."},
+{type:'error',text:"\"I am agreeing with you on this.\"",ans:"Wrong",exp:"Agree = stative. Correct: I agree with you on this."},
+{type:'error',text:"\"The children are making too much noise right now.\"",ans:"Correct",exp:"Right now = Present Continuous."},
+{type:'error',text:"\"He is belonging to the chess club.\"",ans:"Wrong",exp:"Belong = stative. Correct: He belongs to the chess club."},
+{type:'error',text:"\"She eats breakfast at 7 a.m. every day.\"",ans:"Correct",exp:"Daily routine = Present Simple."},
+{type:'error',text:"\"I am recognizing that song!\"",ans:"Wrong",exp:"Recognize = stative. Correct: I recognize that song!"},
+{type:'error',text:"\"She is working late this week because of the deadline.\"",ans:"Correct",exp:"Temporary = Present Continuous."},
+{type:'error',text:"\"He is smelling the flowers.\"",ans:"Correct",exp:"Smell as active action (sniffing) = Present Continuous."},
+{type:'error',text:"\"The soup is smelling delicious.\"",ans:"Wrong",exp:"Smell as state (aroma) = stative. Correct: The soup smells delicious."},
+{type:'error',text:"\"I am hating Mondays.\"",ans:"Wrong",exp:"Hate = stative. Correct: I hate Mondays."},
+{type:'error',text:"\"She is looking out the window right now.\"",ans:"Correct",exp:"Look as active action = Present Continuous."},
+{type:'error',text:"\"He look very tired today.\"",ans:"Wrong",exp:"Missing -s. Correct: He looks very tired today."},
+{type:'error',text:"\"They doesn't like spicy food.\"",ans:"Wrong",exp:"They is plural \u2014 use don't. Correct: They don't like spicy food."},
+{type:'error',text:"\"I am seeing a doctor tomorrow. The appointment is confirmed.\"",ans:"Correct",exp:"Fixed arrangement = Present Continuous."},
+{type:'error',text:"\"She don't speaks French.\"",ans:"Wrong",exp:"Two errors: use doesn't + no -s. Correct: She doesn't speak French."},
+{type:'error',text:"\"He is tasting the cake to see if it's sweet enough.\"",ans:"Correct",exp:"Taste as active action = Present Continuous."},
+{type:'error',text:"\"The cake tastes wonderful.\"",ans:"Correct",exp:"Taste as state = stative = Present Simple."},
+{type:'error',text:"\"She is seeming happy today.\"",ans:"Wrong",exp:"Seem = stative. Correct: She seems happy today."},
+{type:'error',text:"\"I am feeling sick today.\"",ans:"Correct",exp:"Feel as temporary state = Present Continuous is acceptable."},
+{type:'error',text:"\"They are moving to London next month. Everything is arranged.\"",ans:"Correct",exp:"Fixed arrangement = Present Continuous."},
+{type:'error',text:"\"He is being very rude right now.\"",ans:"Correct",exp:"Be as temporary behavior = Present Continuous."},
+{type:'error',text:"\"The students isn't paying attention.\"",ans:"Wrong",exp:"Students is plural \u2014 use aren't. Correct: The students aren't paying attention."},
+{type:'error',text:"\"I don't know the answer.\"",ans:"Correct",exp:"Know = stative = Present Simple negative."},
+{type:'error',text:"\"He is wanting to leave early today.\"",ans:"Wrong",exp:"Want = stative. Correct: He wants to leave early today."},
+{type:'error',text:"\"She is appearing nervous before her presentation.\"",ans:"Wrong",exp:"Appear = stative. Correct: She appears nervous before her presentation."},
+{type:'error',text:"\"They are playing a great match right now.\"",ans:"Correct",exp:"Right now = Present Continuous."},
+{type:'error',text:"\"He don't know the answer.\"",ans:"Wrong",exp:"He = third person singular \u2014 use doesn't. Correct: He doesn't know the answer."},
+{type:'error',text:"\"She is studying medicine. She wants to be a doctor.\"",ans:"Correct",exp:"Ongoing study = Present Continuous."},
+{type:'error',text:"\"I am seeing what you mean now.\"",ans:"Wrong",exp:"See (understand) = stative. Correct: I see what you mean now."},
+{type:'error',text:"\"The train leave at 9 a.m.\"",ans:"Wrong",exp:"Missing -s. Correct: The train leaves at 9 a.m."},
+{type:'error',text:"\"We are meeting the client tomorrow at 10. It's in the calendar.\"",ans:"Correct",exp:"Arranged meeting = Present Continuous."},
+{type:'error',text:"\"She is remembering everything from the lecture.\"",ans:"Wrong",exp:"Remember = stative. Correct: She remembers everything from the lecture."},
+{type:'error',text:"\"He is a doctor. He works at the local hospital.\"",ans:"Correct",exp:"Permanent fact + routine = Present Simple."},
+{type:'error',text:"\"I am owning three cats.\"",ans:"Wrong",exp:"Own = stative. Correct: I own three cats."},
+{type:'error',text:"\"She is not coming to school today \u2014 she is sick.\"",ans:"Correct",exp:"Temporary situation = Present Continuous."},
+{type:'error',text:"\"They are knowing the answer.\"",ans:"Wrong",exp:"Know = stative. Correct: They know the answer."},
+{type:'error',text:"\"He is always complaining about something!\"",ans:"Correct",exp:"Always + Continuous = annoying habit."},
+{type:'error',text:"\"I am not believing this!\"",ans:"Wrong",exp:"Believe = stative. Correct: I don't believe this!"},
+{type:'error',text:"\"He is being a doctor. He works at the hospital.\"",ans:"Wrong",exp:"Be as permanent state = Present Simple. Correct: He is a doctor."},
+{type:'error',text:"\"I am not knowing what to do.\"",ans:"Wrong",exp:"Know = stative. Correct: I don't know what to do."},
+{type:'error',text:"\"She is owning a beautiful house in the countryside.\"",ans:"Wrong",exp:"Own = stative. Correct: She owns a beautiful house in the countryside."},
+{type:'error',text:"\"He is preferring chocolate to vanilla.\"",ans:"Wrong",exp:"Prefer = stative. Correct: He prefers chocolate to vanilla."},
+{type:'error',text:"\"They are believing in aliens.\"",ans:"Wrong",exp:"Believe = stative. Correct: They believe in aliens."},
+{type:'error',text:"\"She don't have time for this.\"",ans:"Wrong",exp:"She = third person singular \u2014 use doesn't. Correct: She doesn't have time for this."},
+{type:'error',text:"\"I am hearing a strange noise outside.\"",ans:"Wrong",exp:"Hear = involuntary = stative. Correct: I hear a strange noise outside."},
+{type:'error',text:"\"He is recognizing that man from somewhere.\"",ans:"Wrong",exp:"Recognize = stative. Correct: He recognizes that man from somewhere."},
+{type:'error',text:"\"The children is playing in the garden.\"",ans:"Wrong",exp:"Children is plural \u2014 use are. Correct: The children are playing in the garden."},
+{type:'error',text:"\"She is working very hard these days.\"",ans:"Correct",exp:"These days = temporary current situation = Present Continuous."},
+{type:'error',text:"\"I don't agree with that decision.\"",ans:"Correct",exp:"Agree = stative = Present Simple."},
+{type:'error',text:"\"He is belonging to three different clubs.\"",ans:"Wrong",exp:"Belong = stative. Correct: He belongs to three different clubs."},
+{type:'error',text:"\"She is always helping others. She's so kind.\"",ans:"Correct",exp:"Always + Continuous = positive habitual behavior."},
+{type:'error',text:"\"They are understanding the lesson now.\"",ans:"Wrong",exp:"Understand = stative. Correct: They understand the lesson now."},
+{type:'error',text:"\"I am wanting to become a doctor one day.\"",ans:"Wrong",exp:"Want = stative. Correct: I want to become a doctor one day."},
+{type:'error',text:"\"He is tasting the food to check the seasoning.\"",ans:"Correct",exp:"Taste as active action = Present Continuous."},
+{type:'error',text:"\"The food tastes amazing!\"",ans:"Correct",exp:"Taste as state = stative = Present Simple."},
+{type:'error',text:"\"She doesn't know the answer.\"",ans:"Correct",exp:"Know = stative = Present Simple negative."},
+{type:'error',text:"\"We aren't going to the concert tonight. Plans changed.\"",ans:"Correct",exp:"Cancelled arrangement = Present Continuous negative."},
+{type:'error',text:"\"He is always arriving late. It's so frustrating!\"",ans:"Correct",exp:"Always + Continuous = annoying habit."},
+{type:'error',text:"\"They is playing football right now.\"",ans:"Wrong",exp:"They is plural \u2014 use are. Correct: They are playing football right now."},
+{type:'error',text:"\"She is appearing very confident in the interview.\"",ans:"Wrong",exp:"Appear = stative. Correct: She appears very confident in the interview."},
+{type:'error',text:"\"I am thinking you should apologize.\"",ans:"Wrong",exp:"Think (opinion) = stative. Correct: I think you should apologize."}
+];
+
+// ── QUIZ STATE ────────────────────────────────────────────────────────────────
+const TOTAL = 100;
+let answered = new Set();
+let score = 0;
+
+// Pick 100 random questions, then sort by type for sections
+const selected = pick(BANK, TOTAL);
+// Assign sections for display grouping
+const mcQ    = selected.filter(q=>q.type==='mc');
+const fillQ  = selected.filter(q=>q.type==='fill');
+const errorQ = selected.filter(q=>q.type==='error');
+const quiz   = [...mcQ, ...fillQ, ...errorQ];
+
+// ── BUILD UI ──────────────────────────────────────────────────────────────────
+function buildQuiz(){
+  const wrap = document.getElementById('quizWrap');
+  let lastSection = null;
+  const sectionMeta = {
+    mc:    {label:'Part A — Choose the correct form', color:'#4361ee'},
+    fill:  {label:'Part B — Write the correct form of the verb', color:'#7209b7'},
+    error: {label:'Part C — Is the sentence correct or wrong?', color:'#f72585'},
+  };
+
+  quiz.forEach((q,i)=>{
+    const qNum = i+1;
+    if(q.type !== lastSection){
+      lastSection = q.type;
+      const sm = sectionMeta[q.type];
+      const lbl = document.createElement('div');
+      lbl.className='section-label';
+      lbl.style.borderColor=sm.color;
+      lbl.style.color=sm.color;
+      lbl.textContent=sm.label;
+      wrap.appendChild(lbl);
+    }
+
+    const card = document.createElement('div');
+    card.className='q-card'; card.id='q'+qNum;
+
+    const num = document.createElement('div');
+    num.className='q-num'; num.textContent='Question '+qNum;
+    card.appendChild(num);
+
+    const txt = document.createElement('div');
+    txt.className='q-text';
+    txt.textContent = q.type==='error' ? 'Is this sentence correct or wrong? '+q.text : q.text;
+    card.appendChild(txt);
+
+    if(q.type==='mc'){
+      const shuffledOpts = shuffle(q.opts.concat([q.ans]).filter((v,i,a)=>a.indexOf(v)===i));
+      const optDiv = document.createElement('div'); optDiv.className='opts';
+      shuffledOpts.forEach(o=>{
+        const btn = document.createElement('button');
+        btn.className='opt'; btn.textContent=o;
+        btn.onclick=()=>handleMC(btn,qNum,o,q.ans,q.exp);
+        optDiv.appendChild(btn);
+      });
+      card.appendChild(optDiv);
+
+    } else if(q.type==='error'){
+      const optDiv = document.createElement('div'); optDiv.className='opts';
+      shuffle(['Correct','Wrong']).forEach(o=>{
+        const btn = document.createElement('button');
+        btn.className='opt';
+        btn.textContent = o==='Correct'?'✅ Correct':'❌ Wrong';
+        btn.onclick=()=>handleMC(btn,qNum,o,q.ans,q.exp);
+        optDiv.appendChild(btn);
+      });
+      card.appendChild(optDiv);
+
+    } else {
+      const fillWrap = document.createElement('div'); fillWrap.className='fill-wrap';
+      const inp = document.createElement('input');
+      inp.className='fill-input'; inp.id='fi'+qNum;
+      inp.placeholder='Type your answer here...';
+      inp.oninput=()=>{inp.className='fill-input';document.getElementById('fb'+qNum).textContent='';document.getElementById('ht'+qNum).classList.remove('show');};
+      inp.onkeydown=e=>{if(e.key==='Enter')checkFill(qNum,q.ans,q.exp);};
+      const cbtn = document.createElement('button');
+      cbtn.className='check-btn'; cbtn.id='cb'+qNum; cbtn.textContent='Check ✓';
+      cbtn.onclick=()=>checkFill(qNum,q.ans,q.exp);
+      fillWrap.appendChild(inp); fillWrap.appendChild(cbtn);
+      card.appendChild(fillWrap);
+    }
+
+    const fb = document.createElement('div'); fb.className='fb'; fb.id='fb'+qNum; card.appendChild(fb);
+    const ht = document.createElement('div'); ht.className='hint'; ht.id='ht'+qNum; card.appendChild(ht);
+    wrap.appendChild(card);
+  });
+}
+
+function handleMC(btn,qNum,chosen,correct,exp){
+  if(answered.has(qNum))return;
+  answered.add(qNum);
+  const card=document.getElementById('q'+qNum);
+  const fb=document.getElementById('fb'+qNum);
+  const ht=document.getElementById('ht'+qNum);
+  card.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btn.classList.add('ok'); card.classList.add('correct');
+    fb.className='fb ok'; fb.textContent='✅ Correct!'; score++;
+  } else {
+    btn.classList.add('err'); card.classList.add('wrong');
+    fb.className='fb err'; fb.textContent='❌ Not quite.';
+    // reveal correct — strip emoji prefix for error type
+    card.querySelectorAll('.opt').forEach(b=>{
+      const raw=b.textContent.replace(/^[✅❌] /,'');
+      if(raw===correct||b.textContent===correct) b.classList.add('reveal');
+    });
+    ht.textContent='📖 '+exp; ht.classList.add('show');
+  }
+  updateProgress();
+}
+
+function checkFill(qNum,accepted,exp){
+  if(answered.has(qNum))return;
+  const inp=document.getElementById('fi'+qNum);
+  const val=norm(inp.value);
+  if(!val)return;
+  answered.add(qNum);
+  const card=document.getElementById('q'+qNum);
+  const fb=document.getElementById('fb'+qNum);
+  const ht=document.getElementById('ht'+qNum);
+  document.getElementById('cb'+qNum).disabled=true;
+  inp.disabled=true;
+  const ok=accepted.some(a=>norm(a)===val);
+  if(ok){
+    inp.classList.add('ok'); card.classList.add('correct');
+    fb.className='fb ok'; fb.textContent='✅ Correct!'; score++;
+  } else {
+    inp.classList.add('err'); card.classList.add('wrong');
+    fb.className='fb err'; fb.textContent='❌ Answer: "'+accepted[0]+'"';
+    ht.textContent='📖 '+exp; ht.classList.add('show');
+  }
+  updateProgress();
+}
+
+function updateProgress(){
+  const n=answered.size;
+  document.getElementById('pb').style.width=(n/TOTAL*100)+'%';
+  document.getElementById('pbLabel').textContent=n+' / '+TOTAL;
+  document.getElementById('scoreLive').textContent='Score: '+score+' correct out of '+n+' answered';
+  if(n===TOTAL) setTimeout(showScore,700);
+}
+
+function showScore(){
+  const panel=document.getElementById('scorePanel');
+  panel.classList.add('show');
+  document.getElementById('scoreBig').textContent=score+'/100';
+  const pct=score;
+  document.getElementById('scorePct').textContent=pct+'%';
+  let msg='';
+  if(pct===100) msg='🌟 Perfect! You nailed every single question!';
+  else if(pct>=90) msg='🎉 Outstanding! Almost flawless!';
+  else if(pct>=80) msg='👏 Great job! Strong understanding of the tenses.';
+  else if(pct>=70) msg='👍 Good work! Review the incorrect ones and try again.';
+  else if(pct>=60) msg='📚 Decent start — focus on the hints and practice more.';
+  else msg='💪 Keep going! Every mistake is a learning opportunity.';
+  document.getElementById('scoreMsg').textContent=msg;
+  panel.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
