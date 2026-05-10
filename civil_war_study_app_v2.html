@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil War — Exam Prep (200 Questions)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1f3a; --parchment: #f5edd8; --gold: #c9943a;
+    --gold-light: #e8b85a; --red-light: #c0392b; --green-light: #27ae60;
+    --border: rgba(201,148,58,0.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--navy); color: var(--parchment); font-family: 'Crimson Pro', Georgia, serif; min-height: 100vh; background-image: radial-gradient(ellipse at 20% 50%, rgba(139,32,32,0.07) 0%, transparent 60%); }
+
+  header { text-align: center; padding: 1.8rem 1rem 1rem; border-bottom: 2px solid var(--border); }
+  header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3.5vw, 2.3rem); color: var(--gold); font-weight: 900; }
+  header p { color: rgba(245,237,216,0.5); font-style: italic; margin-top: 0.3rem; font-size: 0.95rem; }
+
+  #score-bar { display: flex; justify-content: center; gap: 1.5rem; padding: 0.7rem 1rem; background: rgba(0,0,0,0.22); border-bottom: 1px solid var(--border); font-size: 0.97rem; font-weight: 600; flex-wrap: wrap; }
+  .score-item span { color: var(--gold-light); font-size: 1.2rem; }
+
+  .main-wrap { max-width: 800px; margin: 0 auto; padding: 1.8rem 1rem 3rem; }
+
+  /* MODE PICKER */
+  #mode-picker { text-align: center; }
+  #mode-picker h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.4rem; margin-bottom: 1.2rem; }
+  .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.9rem; }
+  .mode-card { background: rgba(255,255,255,0.04); border: 2px solid var(--border); border-radius: 10px; padding: 1.2rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .mode-card:hover { border-color: var(--gold); background: rgba(201,148,58,0.12); transform: translateY(-2px); }
+  .mode-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .mode-card h3 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1rem; margin-bottom: 0.3rem; }
+  .mode-card p { font-size: 0.83rem; color: rgba(245,237,216,0.55); font-style: italic; line-height: 1.4; }
+
+  /* QUIZ */
+  .quiz-wrap { display: none; }
+  .quiz-wrap.active { display: block; animation: fadeIn 0.3s ease; }
+
+  .quiz-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .quiz-header h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.1rem; }
+  .back-btn { background: transparent; border: 1px solid var(--border); color: rgba(245,237,216,0.6); border-radius: 4px; padding: 0.35rem 0.9rem; cursor: pointer; font-size: 0.85rem; transition: all 0.18s; font-family: 'Crimson Pro', serif; }
+  .back-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  .progress-bar-outer { background: rgba(255,255,255,0.07); border-radius: 3px; height: 6px; margin-bottom: 0.5rem; }
+  .progress-bar-inner { background: var(--gold); height: 6px; border-radius: 3px; transition: width 0.4s; }
+  .progress-label { font-size: 0.8rem; color: rgba(245,237,216,0.45); margin-bottom: 1.2rem; }
+
+  .question-box { background: rgba(245,237,216,0.05); border: 1px solid var(--border); border-radius: 10px; padding: 1.6rem; margin-bottom: 1.2rem; }
+  .q-category { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-light); margin-bottom: 0.5rem; }
+  .q-text { font-size: 1.1rem; line-height: 1.6; color: var(--parchment); margin-bottom: 1.2rem; }
+
+  /* True/False */
+  .tf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+  /* Multiple choice */
+  .mc-grid { display: grid; gap: 0.55rem; }
+
+  .opt-btn {
+    background: rgba(255,255,255,0.04); border: 2px solid rgba(201,148,58,0.28);
+    border-radius: 6px; padding: 0.75rem 1rem; color: var(--parchment);
+    font-family: 'Crimson Pro', serif; font-size: 0.97rem;
+    cursor: pointer; text-align: left; transition: all 0.17s; line-height: 1.4;
+    width: 100%;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--gold); background: rgba(201,148,58,0.12); }
+  .opt-btn.correct { border-color: var(--green-light); background: rgba(39,174,96,0.22); }
+  .opt-btn.wrong { border-color: var(--red-light); background: rgba(192,57,43,0.2); }
+  .opt-btn:disabled { cursor: default; }
+  .tf-grid .opt-btn { text-align: center; font-size: 1.1rem; font-weight: 600; }
+
+  .feedback-box { padding: 0.85rem 1.1rem; border-radius: 6px; font-size: 0.93rem; line-height: 1.55; margin-top: 0.9rem; display: none; }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { background: rgba(39,174,96,0.18); border: 1px solid var(--green-light); }
+  .feedback-box.wrong { background: rgba(192,57,43,0.15); border: 1px solid var(--red-light); }
+
+  .nav-btns { display: flex; gap: 1rem; justify-content: center; margin-top: 1.2rem; }
+  .btn { background: var(--gold); color: var(--navy); border: none; border-radius: 5px; padding: 0.6rem 1.5rem; font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.17s; }
+  .btn:hover { background: var(--gold-light); }
+  .btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--parchment); }
+  .btn.secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ROUND COMPLETE */
+  .round-complete { display: none; text-align: center; padding: 2rem; }
+  .round-complete.show { display: block; animation: fadeIn 0.4s; }
+  .round-complete .big-stars { font-size: 3rem; margin-bottom: 0.8rem; }
+  .round-complete h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 2rem; margin-bottom: 0.5rem; }
+  .round-complete .score-display { font-size: 1.3rem; color: rgba(245,237,216,0.8); margin-bottom: 1.5rem; }
+  .round-complete .missed-list { text-align: left; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 1.5rem; max-height: 250px; overflow-y: auto; }
+  .round-complete .missed-list h3 { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 0.95rem; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .missed-item { font-size: 0.88rem; color: rgba(245,237,216,0.7); padding: 0.3rem 0; border-bottom: 1px solid rgba(201,148,58,0.15); line-height: 1.4; }
+  .missed-item:last-child { border-bottom: none; }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+  .shake { animation: shake 0.35s; }
+
+  @media(max-width:500px) { .tf-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚔️ Civil War — Exam Prep</h1>
+  <p>200-question bank · 30 random questions per round · Full presentation + Kahoot</p>
+</header>
+
+<div id="score-bar">
+  <div class="score-item">✅ Correct: <span id="sc-correct">0</span></div>
+  <div class="score-item">❌ Wrong: <span id="sc-wrong">0</span></div>
+  <div class="score-item">🔥 Streak: <span id="sc-streak">0</span></div>
+  <div class="score-item">📚 Total answered: <span id="sc-total">0</span></div>
+</div>
+
+<div class="main-wrap">
+
+  <!-- MODE PICKER -->
+  <div id="mode-picker">
+    <h2>Choose Your Practice Mode</h2>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="startMode('all')">
+        <div class="icon">🎲</div>
+        <h3>All Topics Mix</h3>
+        <p>Random 30 from all 200 questions — full presentation coverage</p>
+      </div>
+      <div class="mode-card" onclick="startMode('kahoot')">
+        <div class="icon">🟢</div>
+        <h3>Kahoot Questions</h3>
+        <p>Exactly the questions from the teacher's Kahoot practice</p>
+      </div>
+      <div class="mode-card" onclick="startMode('events')">
+        <div class="icon">📜</div>
+        <h3>Key Events</h3>
+        <p>Focus on the 12 study guide events and what they mean</p>
+      </div>
+      <div class="mode-card" onclick="startMode('people')">
+        <div class="icon">👤</div>
+        <h3>People & Figures</h3>
+        <p>Key historical figures from the presentation</p>
+      </div>
+      <div class="mode-card" onclick="startMode('tf')">
+        <div class="icon">✅</div>
+        <h3>True / False</h3>
+        <p>Quick True or False questions — fast practice</p>
+      </div>
+      <div class="mode-card" onclick="startMode('dates')">
+        <div class="icon">📅</div>
+        <h3>Dates & Facts</h3>
+        <p>When did it happen? Numbers, dates, specific facts</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-wrap" id="quiz-wrap">
+    <div class="quiz-header">
+      <h2 id="mode-title">Practice Quiz</h2>
+      <button class="back-btn" onclick="goHome()">← Back</button>
+    </div>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="prog-bar" style="width:0%"></div></div>
+    <div class="progress-label" id="prog-label">Question 1 of 30</div>
+
+    <div class="question-box" id="question-box">
+      <div class="q-category" id="q-cat"></div>
+      <div class="q-text" id="q-text"></div>
+      <div id="options-area"></div>
+      <div class="feedback-box" id="feedback"></div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn" id="next-btn" onclick="nextQ()" style="display:none">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- ROUND COMPLETE -->
+  <div class="round-complete" id="round-complete">
+    <div class="big-stars" id="rc-stars"></div>
+    <h2 id="rc-title"></h2>
+    <div class="score-display" id="rc-score"></div>
+    <div class="missed-list" id="rc-missed" style="display:none">
+      <h3>Review These:</h3>
+      <div id="rc-missed-items"></div>
+    </div>
+    <div class="nav-btns" style="justify-content:center;margin-top:0">
+      <button class="btn secondary" onclick="goHome()">← Choose Mode</button>
+      <button class="btn" onclick="startMode(currentMode)">🔄 New Round</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// 200-QUESTION BANK
+// Categories: 'kahoot', 'events', 'people', 'tf', 'dates'
+// Each question: { q, opts, ans (index), exp, cat, type:'mc'|'tf' }
+// ═══════════════════════════════════════════════════════════════════
+const BANK = [
+
+// ── KAHOOT QUESTIONS (directly from teacher's Kahoot) ──────────────
+{ cat:'kahoot', type:'mc', q:"The Wilmot Proviso said that in any land taken from Mexico...", opts:["Mormons could not settle there","Free soilers could not settle there","slavery would be allowed","slavery would NOT be allowed"], ans:3, exp:"The Wilmot Proviso said slavery would NOT be allowed in any land the U.S. won from Mexico. It never became a law, but it caused big arguments between the North and South." },
+{ cat:'kahoot', type:'mc', q:"The Compromise of 1850 was made to...", opts:["give more power to the North","give more power to the South","settle big disagreements between free states and slave states","make it easy to pass new laws in Congress"], ans:2, exp:"The Compromise of 1850 tried to settle big disagreements between free states and slave states. It gave each side something, but did not fully solve the problem." },
+{ cat:'kahoot', type:'mc', q:'The Compromise of 1850 was made by the person called "The Great Compromiser." Who was that?', opts:["Andrew Jackson","Daniel Webster","Henry Clay","John C. Calhoun"], ans:2, exp:'Henry Clay was called "The Great Compromiser" because he was great at making deals. He worked with Stephen Douglas to put together the Compromise of 1850.' },
+{ cat:'kahoot', type:'mc', q:"What law came out of the Compromise of 1850 that made many people angry?", opts:["The Dred Scott Law","The Otis-Adams Act","The Navigation Acts","The Fugitive Slave Law"], ans:3, exp:"The Fugitive Slave Law was the most upsetting part of the Compromise of 1850. It made everyone — even Northerners who hated slavery — help catch runaway enslaved people." },
+{ cat:'kahoot', type:'mc', q:"Which of these was NOT part of the Compromise of 1850?", opts:["A line dividing free and slave states","A stronger fugitive slave law","California became a free state","The slave trade was banned in Washington D.C."], ans:0, exp:"The line dividing free and slave states was from the Missouri Compromise in 1820 — not the Compromise of 1850. The 1850 deal included California as free, a stronger Fugitive Slave Law, and banning the slave trade in D.C." },
+{ cat:'kahoot', type:'mc', q:"What did the Fugitive Slave Act do to people in the North?", opts:["It made slavery feel personal to Northerners — they had to help catch escaped people","It showed slavery was a moral issue","It let Kansas decide on slavery","It was a Supreme Court ruling about citizenship"], ans:0, exp:"The Fugitive Slave Act made slavery feel very personal to Northerners. They were now required by law to help catch escaped enslaved people, even if they were against slavery." },
+{ cat:'kahoot', type:'mc', q:"The Fugitive Slave Act was added to which agreement?", opts:["The Compromise of 1850","The Dred Scott Decision","The Kansas-Nebraska Act","The Missouri Compromise"], ans:0, exp:"The Fugitive Slave Act was one of the five parts of the Compromise of 1850. It was included to give the South something in return for admitting California as a free state." },
+{ cat:'kahoot', type:'mc', q:"How did the Fugitive Slave Act help Southern slave owners?", opts:["Runaway enslaved people had to be returned to their owners","Enslaved people were freed","The owners became fugitives","It did not help them at all"], ans:0, exp:"The Fugitive Slave Act said that if an enslaved person escaped and ran away, they had to be caught and returned — even if they made it to a free state in the North." },
+{ cat:'kahoot', type:'mc', q:"What did Uncle Tom's Cabin show people?", opts:["That slavery was not just a political issue — it was a moral (right vs. wrong) issue","That abolitionists would never stop slavery","That slavery was a personal problem for Northerners","That Southern states were happy and wanted no changes"], ans:0, exp:"Uncle Tom's Cabin showed readers that slavery was not just a debate about politics — it was about real people suffering. It convinced many Northerners that slavery was deeply wrong." },
+{ cat:'kahoot', type:'mc', q:"Why did Harriet Beecher Stowe write Uncle Tom's Cabin?", opts:["Because of Nat Turner's rebellion","Because John Brown was executed","Because of the Fugitive Slave Law of 1850","Because Missouri became a slave state"], ans:2, exp:"Harriet Beecher Stowe wrote Uncle Tom's Cabin because she was furious about the Fugitive Slave Law of 1850, which made Northerners help catch escaped enslaved people." },
+{ cat:'kahoot', type:'mc', q:"What did the Kansas-Nebraska Act of 1854 allow?", opts:["It showed slavery was a moral issue","It let the people of Kansas decide if they wanted slavery or not","It made slavery personal for Northerners","It made Southern states happy by protecting slavery everywhere"], ans:1, exp:"The Kansas-Nebraska Act let the people living in Kansas (and Nebraska) vote on whether to allow slavery. This idea is called popular sovereignty — the people decide." },
+{ cat:'kahoot', type:'mc', q:"What did popular sovereignty mean during the Civil War era?", opts:["The ability to vote on whether to allow slavery in your state or territory","The right to leave the United States","Congress voting on the president's choices","Congress deciding where to build new land"], ans:0, exp:"Popular sovereignty meant that the people living in a territory got to vote and decide for themselves whether to allow slavery — not Congress, not the president." },
+{ cat:'kahoot', type:'mc', q:'What was "Bleeding Kansas"?', opts:["John Brown's attack at Pottawatomie Creek","When a senator from Kansas was attacked in Congress","A Native American attack in Topeka","Violent fights between pro-slavery and anti-slavery settlers in Kansas"], ans:3, exp:"Bleeding Kansas was the name for the violent fights between people who wanted slavery and people who didn't in Kansas. Both sides flooded in to control the vote, and the fighting turned deadly." },
+{ cat:'kahoot', type:'mc', q:"Bleeding Kansas happened because of which government action?", opts:["The Kansas-Nebraska Act","The Emancipation Proclamation","South Carolina leaving the Union","The Missouri Compromise"], ans:0, exp:"Bleeding Kansas happened right after the Kansas-Nebraska Act of 1854. That law let people vote on slavery in Kansas, which caused both pro-slavery and anti-slavery groups to rush in and fight over it." },
+{ cat:'kahoot', type:'mc', q:"Why was Senator Charles Sumner attacked in Congress?", opts:["He accused Southern senators of forcing Kansas to become a slave state","He invited pro-slavery men from Missouri to attack Kansas","He took bribes to vote against slavery","He took bribes to vote for slavery"], ans:0, exp:"Sumner gave a speech saying Southern senators were forcing Kansas to become a slave state through cheating and violence. This made Rep. Preston Brooks so angry he attacked Sumner with a cane." },
+{ cat:'kahoot', type:'mc', q:"Which two things are true about the Caning of Charles Sumner?", opts:["He was beaten by Rep. Preston Brooks","He was beaten because he criticized slavery","He was beaten because he spoke out against the violence in Kansas","He was beaten because he supported slavery"], ans:2, exp:"The Kahoot showed TWO correct answers: Sumner was beaten by Rep. Preston Brooks, AND it happened because he criticized the violence in Kansas. Both of those are true." },
+{ cat:'kahoot', type:'mc', q:"In the Dred Scott case, the Supreme Court said that...", opts:["Dred Scott was not a U.S. citizen","The Missouri Compromise was unconstitutional (illegal)","Congress had no power to ban slavery from any territory","All of the above"], ans:3, exp:"The Supreme Court ruled ALL three: Dred Scott had no rights as a citizen, the Missouri Compromise was illegal, AND Congress could not ban slavery from any territory. This was a huge win for the South." },
+{ cat:'kahoot', type:'mc', q:"Which abolitionist led a failed raid at Harper's Ferry and was later hanged?", opts:["John Brown","Dred Scott","Nat Turner","Frederick Douglass"], ans:0, exp:"John Brown led the raid on Harper's Ferry in 1859. He wanted to take weapons and start a slave rebellion. He was caught, put on trial, and hanged. Many Northerners saw him as a hero after that." },
+{ cat:'kahoot', type:'mc', q:"Whose election in 1860 caused South Carolina to leave the United States?", opts:["Stephen Douglas","Andrew Johnson","Abraham Lincoln","Henry Clay"], ans:2, exp:"When Abraham Lincoln won the 1860 election, South Carolina decided to leave the United States on December 20, 1860. They were afraid Lincoln would stop slavery from spreading." },
+{ cat:'kahoot', type:'mc', q:"What happened right after Abraham Lincoln won the Election of 1860?", opts:["The Supreme Court said Black people weren't citizens","Kansas decided to become a slave state","Southern states left the Union (this is called secession)","Southern states were pleased and stayed in the Union"], ans:2, exp:"After Lincoln won, Southern states were scared he would stop slavery from spreading. So they started leaving the United States. South Carolina was first, and others followed." },
+{ cat:'kahoot', type:'mc', q:"Did John C. Breckinridge support or oppose slavery?", opts:["He supported slavery","He opposed slavery"], ans:0, exp:"John C. Breckinridge was the Southern candidate in the 1860 election and strongly supported slavery. He wanted a law to protect slavery everywhere in the country." },
+{ cat:'kahoot', type:'mc', q:"Even though Lincoln LOST the 1858 Senate race against Douglas, what good thing came out of it for him?", opts:["He became famous all across the country","He won a seat in the Senate anyway","He won the White House right after","He got the Democrat Party's support"], ans:0, exp:"Lincoln lost the Senate race to Douglas in 1858, but their famous debates made Lincoln famous all across the country. That fame helped him win the presidential election two years later in 1860." },
+{ cat:'kahoot', type:'mc', q:"Which of these is NOT true about Stephen Douglas?", opts:["He debated Abraham Lincoln","He believed in popular sovereignty","He lost the 1858 Senate race to Lincoln","He invested in the railroad"], ans:2, exp:"Douglas actually WON the 1858 Illinois Senate race against Lincoln! So saying 'He lost the 1858 Election to Lincoln' is wrong. Douglas won that one." },
+{ cat:'kahoot', type:'mc', q:"What were the Lincoln-Douglas Debates?", opts:["A fight over whether Kansas should become a state","A person who runs away from captivity","A law about how new states join the U.S.","Political debates between Lincoln and Douglas running for Senate in Illinois"], ans:3, exp:"The Lincoln-Douglas Debates were seven public debates between Abraham Lincoln and Stephen Douglas. They were running against each other for a Senate seat in Illinois in 1858." },
+{ cat:'kahoot', type:'mc', q:"Why were the Lincoln-Douglas Debates important for Lincoln?", opts:["He won the Senate seat","He got the Kansas-Nebraska Act removed","He became well known all across the country","He got the South to like him"], ans:2, exp:"Even though Lincoln lost the Senate race, the debates made him well known all over the country. Being famous helped him win the presidential election in 1860." },
+{ cat:'kahoot', type:'mc', q:"In the election of 1860, which states did Abraham Lincoln win?", opts:["He won slave states and free states","He won the North and the far West, but no Southern states","He won most of the popular vote but not enough electoral votes","He won the border states but not New England"], ans:1, exp:"Lincoln won all the Northern and far Western states, but he got zero votes from the South. The South refused to support him at all, which is why they left the Union after he won." },
+{ cat:'kahoot', type:'tf', q:"Abraham Lincoln was against slavery spreading to new territories.", opts:["True","False"], ans:0, exp:"True. Lincoln did not want slavery to spread to new places. He wanted to leave it where it already was, but stop it from growing into new territories. This worried the South a lot." },
+{ cat:'kahoot', type:'tf', q:"Abraham Lincoln wanted slavery to spread to new territories.", opts:["True","False"], ans:1, exp:"False. Lincoln was AGAINST slavery spreading. He wanted to keep it where it was and stop it from growing. That is exactly what scared the Southern states when he was elected." },
+{ cat:'kahoot', type:'mc', q:"The FIRST group of Southern states to leave the Union did so because of...", opts:["Lincoln's election in 1860","The attack on Fort Sumter","John Brown's Raid","None of the above"], ans:0, exp:"The first states to leave — starting with South Carolina in December 1860 — left because Lincoln was elected president. They were scared he would stop slavery from spreading." },
+{ cat:'kahoot', type:'mc', q:"What caused the SECOND group of Southern states to leave the Union?", opts:["The attack on Fort Sumter","Lincoln's election","The Battle of Bull Run","None of the above"], ans:0, exp:"After Confederate forces attacked Fort Sumter in April 1861, Virginia, North Carolina, Arkansas, and Tennessee decided to leave the Union too. The attack on Fort Sumter triggered this second group." },
+{ cat:'kahoot', type:'mc', q:"When did South Carolina leave the United States?", opts:["November 1860","December 1860","January 1861","February 1861"], ans:1, exp:"South Carolina left the United States on December 20, 1860 — about six weeks after Lincoln won the election on November 6, 1860." },
+
+// ── KEY EVENTS QUESTIONS ───────────────────────────────────────────
+{ cat:'events', type:'mc', q:"What did the Missouri Compromise (1820) do?", opts:["Made Missouri and Maine both slave states","Made Missouri a slave state and Maine a free state, and drew a dividing line for future territories","Made Missouri a free state to balance new slave states","Banned slavery in all new territories"], ans:1, exp:"The Missouri Compromise let Missouri join as a slave state and Maine as a free state to keep things balanced. It also drew an imaginary line — north of it, territories would be free; south of it, slavery was allowed." },
+{ cat:'events', type:'mc', q:"What did the dividing line from the Missouri Compromise mean?", opts:["It was the border between the U.S. and Mexico","Land north of it would be free, land south of it could have slavery","It was the border between Kansas and Nebraska","Land south of it would be free, land north of it could have slavery"], ans:1, exp:"The line drawn at 36°30' north latitude split future territories. Land north of it would be free states. Land south of it could allow slavery. The Kansas-Nebraska Act later cancelled this rule." },
+{ cat:'events', type:'mc', q:"Why did the Mexican-American War make the slavery debate worse?", opts:["Mexico demanded the U.S. end slavery","The U.S. got new land and people could not agree on whether slavery should be allowed there","Mexico joined the U.S. and brought enslaved people","Slavery was already illegal in Mexico so the South refused to fight"], ans:1, exp:"After winning the war, the U.S. got a huge amount of new land. Right away, people started arguing: should slavery be allowed in these new places? That argument got very heated." },
+{ cat:'events', type:'mc', q:"What was the main goal of the Compromise of 1850?", opts:["To end slavery forever","To keep peace between free states and slave states","To start the Civil War","To punish the South for having slavery"], ans:1, exp:"The Compromise of 1850 was a deal meant to keep peace between the free states in the North and the slave states in the South. It gave each side something but made both sides unhappy in different ways." },
+{ cat:'events', type:'mc', q:"Which of these was part of the Compromise of 1850?", opts:["California joined as a free state, and the Fugitive Slave Act was added","California joined as a slave state, and slavery was banned everywhere","All slavery was ended, and five new states joined","California joined as free, and slavery was banned across the whole country"], ans:0, exp:"The deal included California joining as a free state, New Mexico and Utah getting to vote on slavery, a stronger Fugitive Slave Act, banning the slave trade in Washington D.C., and settling Texas's border." },
+{ cat:'events', type:'mc', q:"Why were Northerners so angry about the Fugitive Slave Act?", opts:["It freed all enslaved people in the North","It forced ALL people — even Northerners who hated slavery — to help catch runaway enslaved people or go to jail","It gave the South more power in Congress","It banned abolitionist books in the North"], ans:1, exp:"The Fugitive Slave Act made it the LAW that everyone had to help catch escaped enslaved people — even Northerners who thought slavery was wrong. If you refused, you could be fined or put in jail." },
+{ cat:'events', type:'mc', q:"What did Uncle Tom's Cabin do to change people's minds in the North?", opts:["It convinced Northerners to accept slavery","It showed slavery was a right vs. wrong issue, making Northerners more strongly against it","It had no effect on people's opinions","It made the North invade the South right away"], ans:1, exp:"The book showed the real suffering of enslaved people through fictional stories. It made many Northerners realize slavery wasn't just a political debate — it was about real human beings being treated cruelly." },
+{ cat:'events', type:'mc', q:"How did the South feel about Uncle Tom's Cabin?", opts:["They loved it and celebrated it","They thought it was true and started freeing people","They were angry — they felt the book attacked and lied about them","They ignored it completely"], ans:2, exp:"The South was furious about Uncle Tom's Cabin. They felt it was unfair and untrue. The book made the North-South divide even worse." },
+{ cat:'events', type:'mc', q:"Who wrote Uncle Tom's Cabin?", opts:["Harriet Tubman","Harriet Beecher Stowe","Frederick Douglass","Sojourner Truth"], ans:1, exp:"Harriet Beecher Stowe wrote Uncle Tom's Cabin in 1852. She was an abolitionist (someone who wanted to end slavery), and she wrote the book to show how cruel slavery really was." },
+{ cat:'events', type:'mc', q:"What did the Kansas-Nebraska Act (1854) do?", opts:["It banned slavery in Kansas and Nebraska","It let the people of Kansas and Nebraska vote on whether to allow slavery","It immediately made Kansas and Nebraska slave states","It gave Kansas to the South and Nebraska to the North"], ans:1, exp:"The Kansas-Nebraska Act said that the people living in Kansas and Nebraska could vote on whether to allow slavery. This idea is called popular sovereignty. It also cancelled the Missouri Compromise's dividing line." },
+{ cat:'events', type:'mc', q:"What was the Pottawatomie Massacre?", opts:["A Native American attack on settlers in Kansas","John Brown and his group killed five pro-slavery men in Kansas","A battle between the North and South in Kansas","Pro-slavery men killed anti-slavery settlers"], ans:1, exp:"After pro-slavery people attacked the town of Lawrence, Kansas, the abolitionist John Brown got revenge. He and his followers went to Pottawatomie Creek and killed five pro-slavery men. This made the violence in Kansas much worse." },
+{ cat:'events', type:'mc', q:"What was the Sacking of Lawrence (1856)?", opts:["Anti-slavery people attacked a pro-slavery town","Pro-slavery people attacked the anti-slavery town of Lawrence, Kansas","Lawrence voted to become a slave state","The government destroyed an anti-slavery newspaper in Lawrence"], ans:1, exp:"Pro-slavery people attacked Lawrence, Kansas, which was a known anti-slavery town. They burned buildings and wrecked printing presses. This attack shocked abolitionists like John Brown and made the violence even worse." },
+{ cat:'events', type:'mc', q:"Who caned Senator Charles Sumner?", opts:["Senator Jefferson Davis","Rep. Preston Brooks of South Carolina","Senator Stephen Douglas","Rep. Andrew Butler of South Carolina"], ans:1, exp:"Rep. Preston Brooks of South Carolina beat Senator Charles Sumner with a metal-tipped cane in the Senate chamber in May 1856, after Sumner's anti-slavery speech that insulted Brooks's relative." },
+{ cat:'events', type:'mc', q:"How did the South react to the Caning of Charles Sumner?", opts:["They condemned Brooks as a criminal","They were embarrassed and apologized","They celebrated Brooks as a hero and sent him souvenir canes","They expelled Brooks from Congress immediately"], ans:2, exp:"The South celebrated Preston Brooks as a hero. Southern admirers even sent him souvenir canes to honor what he had done. The North was horrified by this reaction." },
+{ cat:'events', type:'mc', q:"What was Dred Scott's legal argument?", opts:["He argued Congress should end all slavery","He sued for his freedom, saying living in a free state and free territory made him free","He asked to be bought by the U.S. government","He argued that he was a Mexican citizen, not a slave"], ans:1, exp:"Dred Scott had lived in free states and free territories with his enslaver. He sued for his freedom arguing that living in free territory made him a free man. The Supreme Court disagreed." },
+{ cat:'events', type:'mc', q:"Who was Chief Justice Roger B. Taney in the Dred Scott case?", opts:["He ruled in favor of Dred Scott's freedom","He led the 7-2 ruling against Scott, saying Black people had no rights","He was the only justice who supported Scott","He refused to hear the case"], ans:1, exp:"Chief Justice Roger B. Taney led the 7-2 ruling against Dred Scott. Despite personally owning enslaved people, he wrote the majority opinion that declared African Americans had no legal rights." },
+{ cat:'events', type:'mc', q:"What was John Brown's plan at Harper's Ferry?", opts:["To assassinate President Buchanan","To seize a federal weapons arsenal, arm enslaved people, and start a massive rebellion","To hold Congress hostage until slavery was banned","To convince the Army to mutiny against the Southern states"], ans:1, exp:"John Brown planned to raid the federal arsenal at Harper's Ferry, Virginia, take the weapons, distribute them to enslaved people, and trigger a massive slave rebellion that would end slavery." },
+{ cat:'events', type:'mc', q:"What happened to John Brown after the Harper's Ferry raid?", opts:["He escaped to Canada","He was captured by U.S. soldiers, tried for treason, and hanged in 1859","He was pardoned by President Buchanan","He was imprisoned for life but eventually freed"], ans:1, exp:"John Brown was captured by U.S. soldiers led by Robert E. Lee. He was tried for treason, convicted, and hanged in December 1859. His execution made him a martyr to many Northerners." },
+{ cat:'events', type:'mc', q:"Who were the four candidates in the Election of 1860?", opts:["Lincoln, Douglas, Davis, Calhoun","Lincoln, Douglas, Breckinridge, Bell","Lincoln, Douglas, Grant, Lee","Lincoln, Clay, Webster, Calhoun"], ans:1, exp:"The four candidates were: Abraham Lincoln (Republican), Stephen Douglas (Northern Democrat), John C. Breckinridge (Southern Democrat), and John Bell (Constitutional Union Party)." },
+{ cat:'events', type:'mc', q:"What was Lincoln's position on slavery in the 1860 election?", opts:["Immediate abolition of all slavery","Allow slavery everywhere, including new territories","Containment: leave slavery where it is but do not let it expand","Popular sovereignty for all territories"], ans:2, exp:"Lincoln's position was 'containment' — leave slavery where it already exists but do NOT allow it to spread to new territories. He did not call for immediate abolition." },
+{ cat:'events', type:'mc', q:"How many electoral votes did Lincoln win in 1860?", opts:["120","180","220","270"], ans:1, exp:"Lincoln won 180 electoral votes from 18 Northern and Western states. He won 39.8% of the popular vote but zero electoral votes from the South." },
+{ cat:'events', type:'mc', q:"What started the Civil War?", opts:["South Carolina's secession","Lincoln's inauguration","The Confederate attack on Fort Sumter on April 12, 1861","The Dred Scott Decision"], ans:2, exp:"The Civil War officially began when Confederate forces attacked Fort Sumter, a U.S. federal military base in Charleston, South Carolina's harbor, on April 12, 1861. The attack lasted 33 hours." },
+{ cat:'events', type:'mc', q:"How long did the attack on Fort Sumter last?", opts:["3 hours","33 hours","3 days","3 weeks"], ans:1, exp:"The Confederate attack on Fort Sumter lasted 33 hours. The Union garrison eventually surrendered, handing the Confederacy its first victory and starting the Civil War." },
+
+// ── PEOPLE & FIGURES ───────────────────────────────────────────────
+{ cat:'people', type:'mc', q:"Who was Nat Turner?", opts:["A free Black man who worked in politics","An enslaved man in Virginia who could read and led a big rebellion in 1831","A Northern general who helped free enslaved people","A Southern senator who wrote the Fugitive Slave Act"], ans:1, exp:"Nat Turner was an enslaved man in Virginia who was unusual because he could read and write. In August 1831 he led a rebellion of 70+ enslaved people. Over 60 white people were killed before the rebellion was stopped." },
+{ cat:'people', type:'mc', q:"What happened to Nat Turner after the rebellion?", opts:["He escaped to Canada using the Underground Railroad","He hid for 6 weeks, was caught, put on trial, and hanged","He was forgiven by the Virginia governor","He was shot right after being caught"], ans:1, exp:"Nat Turner hid for 6 weeks before being found. He was put on trial, found guilty, and hanged. Sadly, about 120 Black people who had nothing to do with the rebellion were also killed by angry mobs." },
+{ cat:'people', type:'mc', q:"What did Harriet Tubman do on the Underground Railroad?", opts:["She created the Underground Railroad","She escaped slavery in 1849 and then went back about 13 times to bring others to freedom","She helped people in the South but never escaped herself","She only guided people to free Northern states, not Canada"], ans:1, exp:"Harriet Tubman escaped from slavery in 1849. Then she risked her life by going back about 13 times to guide other enslaved people to freedom. She famously said she 'never lost a passenger.'" },
+{ cat:'people', type:'mc', q:"Why did Harriet Tubman lead people to Canada instead of just stopping in the North?", opts:["Canada was closer to Virginia","After the Fugitive Slave Act of 1850, escaped people could still be caught and returned even in free Northern states","Canada had better opportunities","The Underground Railroad only had routes to Canada"], ans:1, exp:"The Fugitive Slave Act said escaped enslaved people could be caught and sent back even in free Northern states. So Canada — which was outside of U.S. law — was the only place they could be truly safe and free." },
+{ cat:'people', type:'mc', q:"Who was Frederick Douglass?", opts:["A pro-slavery senator from the South","A man who had been enslaved, escaped, and became a famous speaker and writer against slavery","The Supreme Court judge in the Dred Scott case","The general who led Confederate forces at Fort Sumter"], ans:1, exp:"Frederick Douglass had been born into slavery, escaped, and became one of the most famous people fighting against slavery in American history. He gave speeches and wrote books using his own life story to show how wrong slavery was." },
+{ cat:'people', type:'mc', q:"Why was Henry Clay called 'The Great Compromiser'?", opts:["He led the Confederate Army","He was very good at making deals and compromises between the North and South","He wrote the Kansas-Nebraska Act","He was the only judge to support Dred Scott"], ans:1, exp:"Henry Clay got the nickname 'The Great Compromiser' because he was very skilled at making deals to keep the North and South from splitting apart. He helped create the Missouri Compromise (1820) and the Compromise of 1850." },
+{ cat:'people', type:'mc', q:"Who was Stephen Douglas?", opts:["A Confederate general","A senator from Illinois who believed in popular sovereignty and wrote the Kansas-Nebraska Act","The judge who decided the Dred Scott case","Lincoln's vice president"], ans:1, exp:"Stephen Douglas was an important senator from Illinois. He strongly believed in popular sovereignty (letting people vote on slavery). He wrote the Kansas-Nebraska Act and had the famous debates with Lincoln in 1858, which he won." },
+{ cat:'people', type:'mc', q:"What is President James Buchanan remembered for?", opts:["Successfully fixing the slavery problem","Being one of the worst presidents — he let the slavery crisis get out of control instead of fixing it","Starting the Civil War by attacking Fort Sumter","Signing the Emancipation Proclamation early"], ans:1, exp:"James Buchanan was president right before Lincoln (1857-1861) and is considered one of the worst presidents ever. He did not do enough to stop the country from falling apart, and left Lincoln with a huge mess." },
+{ cat:'people', type:'mc', q:"Who was Dred Scott?", opts:["A free Black man fighting for voting rights","An enslaved man who went to court to try to get his freedom after living in free places","A Confederate general who fought in Kansas","A Northern man who helped Harriet Tubman"], ans:1, exp:"Dred Scott was an enslaved man who had traveled with his owner to free states and territories. He believed this made him free, so he sued in court. He lost — the Supreme Court said he had no rights at all." },
+{ cat:'people', type:'mc', q:"What did John C. Breckinridge want to do about slavery?", opts:["End slavery right away","Let each territory vote on slavery","Make a law that protected slavery everywhere in the country","Keep slavery only where it already existed"], ans:2, exp:"John C. Breckinridge, the Southern candidate in the 1860 election, wanted a 'Federal Slave Code' — a law that would protect and allow slavery everywhere in the country, not just where people voted for it." },
+{ cat:'people', type:'mc', q:"What was John Bell's main concern in the 1860 election?", opts:["Ending slavery immediately","Setting the slavery question aside to save the Union from splitting apart","Letting all territories vote on slavery","Making a law to protect slavery everywhere"], ans:1, exp:"John Bell, the Constitutional Union Party candidate, wanted to put the slavery debate on hold and focus on keeping the country together. He was worried that fighting over slavery would destroy the Union." },
+{ cat:'people', type:'mc', q:"Who was Preston Brooks?", opts:["A senator from Massachusetts who opposed slavery","A congressman from South Carolina who beat Senator Sumner with a cane","An abolitionist who helped John Brown","The commander of Fort Sumter"], ans:1, exp:"Preston Brooks was a congressman from South Carolina. He was so angry about Senator Sumner's speech against slavery that he walked into the Senate and beat Sumner with a metal cane. The South called him a hero; the North was horrified." },
+{ cat:'people', type:'mc', q:"What was Senator Charles Sumner known for?", opts:["Being a pro-slavery senator from South Carolina","Being a senator from Massachusetts who fought against slavery and was beaten for it","Writing the Kansas-Nebraska Act","Getting California to become a free state"], ans:1, exp:"Charles Sumner was a senator from Massachusetts who strongly opposed slavery. After he gave a powerful speech about the violence in Kansas, a Southern congressman beat him so badly with a cane that Sumner couldn't return to work for years." },
+
+// ── TRUE / FALSE ───────────────────────────────────────────────────
+{ cat:'tf', type:'tf', q:"The Underground Railroad was a real railroad with actual train tracks.", opts:["True","False"], ans:1, exp:"False. The Underground Railroad was NOT a real railroad. It was a secret system of people, safe houses, and escape routes that helped enslaved people escape to freedom. Railroad words were used as secret code." },
+{ cat:'tf', type:'tf', q:"The Missouri Compromise drew a line — land north of it would be free, land south of it could have slavery.", opts:["True","False"], ans:0, exp:"True. The Missouri Compromise (1820) drew an imaginary line at 36°30' latitude. New territories north of it would become free states. South of it, slavery was allowed." },
+{ cat:'tf', type:'tf', q:"The Kansas-Nebraska Act made the Missouri Compromise stronger.", opts:["True","False"], ans:1, exp:"False. The Kansas-Nebraska Act CANCELLED the Missouri Compromise. It reopened the argument about slavery in the western territories that the Missouri Compromise had tried to settle." },
+{ cat:'tf', type:'tf', q:"The Dred Scott Decision said Congress had no power to ban slavery from any territory.", opts:["True","False"], ans:0, exp:"True. The Supreme Court's Dred Scott Decision (1857) said Congress could NOT ban slavery from any territory. This basically made all earlier compromises meaningless." },
+{ cat:'tf', type:'tf', q:"Henry Clay wrote the Kansas-Nebraska Act.", opts:["True","False"], ans:1, exp:"False. Stephen Douglas wrote the Kansas-Nebraska Act. Henry Clay was the famous deal-maker behind the Missouri Compromise and the Compromise of 1850, but he died in 1852 before the Kansas-Nebraska Act was written." },
+{ cat:'tf', type:'tf', q:"Harriet Beecher Stowe wanted to end slavery.", opts:["True","False"], ans:0, exp:"True. Harriet Beecher Stowe was an abolitionist — someone who wanted to end slavery. She wrote Uncle Tom's Cabin in 1852 to show people how cruel and wrong slavery really was." },
+{ cat:'tf', type:'tf', q:"Abraham Lincoln won the 1858 Illinois Senate race against Stephen Douglas.", opts:["True","False"], ans:1, exp:"False. Lincoln actually LOST the 1858 Senate race to Stephen Douglas. But the debates they had made Lincoln famous all over the country, which helped him win the presidency in 1860." },
+{ cat:'tf', type:'tf', q:"John Brown's raid on Harper's Ferry failed to start a slave rebellion.", opts:["True","False"], ans:0, exp:"True. The raid failed completely. Brown wanted to take weapons and start a huge rebellion, but U.S. soldiers surrounded him quickly. He was caught, put on trial, and hanged." },
+{ cat:'tf', type:'tf', q:"South Carolina was the first state to leave the United States.", opts:["True","False"], ans:0, exp:"True. South Carolina left the United States on December 20, 1860 — about six weeks after Lincoln was elected. It was the first of 11 states that eventually left." },
+{ cat:'tf', type:'tf', q:"The Compromise of 1850 permanently fixed the slavery debate.", opts:["True","False"], ans:1, exp:"False. The Compromise of 1850 was only a temporary fix and actually made things worse in some ways. The Fugitive Slave Act that was part of it made Northerners furious and pushed the two sides further apart." },
+{ cat:'tf', type:'tf', q:"Nat Turner's Rebellion lasted about 2 days before it was stopped.", opts:["True","False"], ans:0, exp:"True. Nat Turner's rebellion lasted about 2 days in August 1831 before it was put down. During those two days, over 60 white people were killed." },
+{ cat:'tf', type:'tf', q:"The Fugitive Slave Act only required people in the South to help catch runaway enslaved people.", opts:["True","False"], ans:1, exp:"False. The Fugitive Slave Act required EVERYONE — including people in the North who hated slavery — to help catch runaway enslaved people. This is what made Northerners so angry about the law." },
+{ cat:'tf', type:'tf', q:"Stephen Douglas believed the people of a territory should get to vote on whether to allow slavery.", opts:["True","False"], ans:0, exp:"True. This idea is called popular sovereignty, and Stephen Douglas believed in it strongly. He thought the people living in a territory should decide the slavery question — not Congress." },
+{ cat:'tf', type:'tf', q:"Pro-slavery forces attacked the town of Lawrence BEFORE John Brown attacked pro-slavery settlers.", opts:["True","False"], ans:0, exp:"True. Pro-slavery people attacked Lawrence, Kansas first. THEN John Brown responded by going to Pottawatomie Creek and killing five pro-slavery men. Lawrence was attacked first." },
+{ cat:'tf', type:'tf', q:"James Buchanan is considered one of the best presidents in U.S. history.", opts:["True","False"], ans:1, exp:"False. James Buchanan is usually ranked as one of the WORST presidents. He did nothing to fix the crisis over slavery and left the country on the edge of war when Lincoln took over." },
+{ cat:'tf', type:'tf', q:"The Civil War started when Confederate forces attacked Fort Sumter.", opts:["True","False"], ans:0, exp:"True. The Civil War officially started on April 12, 1861 when Confederate (Southern) forces fired on Fort Sumter, a U.S. military base in South Carolina." },
+{ cat:'tf', type:'tf', q:"Dred Scott won his court case and was freed by the Supreme Court.", opts:["True","False"], ans:1, exp:"False. Dred Scott LOST his case. The Supreme Court voted 7 to 2 against him, saying he had no rights as a citizen and that Congress could not ban slavery from any territory." },
+{ cat:'tf', type:'tf', q:"John C. Breckinridge was against slavery.", opts:["True","False"], ans:1, exp:"False. John C. Breckinridge strongly SUPPORTED slavery. He was the Southern candidate in the 1860 election and wanted a law to protect slavery everywhere." },
+{ cat:'tf', type:'tf', q:"The main topic of the Lincoln-Douglas Debates was whether slavery should spread to new territories.", opts:["True","False"], ans:0, exp:"True. The big question in the Lincoln-Douglas Debates (1858) was whether slavery should be allowed to grow into new territories. Lincoln was against it growing; Douglas supported letting people vote." },
+{ cat:'tf', type:'tf', q:"Harriet Tubman never lost a single person she guided to freedom.", opts:["True","False"], ans:0, exp:"True. Harriet Tubman was proud to say she 'never lost a passenger.' In about 13 trips back into the South, every single person she led made it to freedom safely." },
+{ cat:'tf', type:'tf', q:"The Kansas-Nebraska Act was written by Abraham Lincoln.", opts:["True","False"], ans:1, exp:"False. The Kansas-Nebraska Act was written by Stephen Douglas, not Lincoln. Douglas wrote it partly to allow a transcontinental railroad to be built, and he included popular sovereignty to get Southern support." },
+{ cat:'tf', type:'tf', q:"Uncle Tom's Cabin is based on true stories about real people.", opts:["True","False"], ans:1, exp:"False. Uncle Tom's Cabin is fiction — the characters and specific events are made up. But it was based on real accounts of slavery to show how cruel it was. Harriet Beecher Stowe called it 'historical fiction.'" },
+{ cat:'tf', type:'tf', q:"Sectionalism means caring more about your region than about the whole country.", opts:["True","False"], ans:0, exp:"True. Sectionalism means being more loyal to your region (like the North or the South) than to the whole United States. It was one of the biggest reasons the country moved toward Civil War." },
+{ cat:'tf', type:'tf', q:"The second group of Southern states left the Union because of the attack on Fort Sumter.", opts:["True","False"], ans:0, exp:"True. After Confederate forces attacked Fort Sumter in April 1861, Virginia, North Carolina, Arkansas, and Tennessee all left the Union. This was the second wave. Lincoln's election caused the first wave." },
+
+// ── DATES & FACTS ──────────────────────────────────────────────────
+{ cat:'dates', type:'mc', q:"What year was the Missouri Compromise passed?", opts:["1820","1845","1850","1854"], ans:0, exp:"The Missouri Compromise was passed in 1820. It was a deal to keep the balance between free states and slave states. Missouri became a slave state and Maine became a free state." },
+{ cat:'dates', type:'mc', q:"What year did Nat Turner's Rebellion happen?", opts:["1820","1831","1845","1850"], ans:1, exp:"Nat Turner's Rebellion happened in August 1831 in Virginia. Turner led 70+ enslaved people in a two-day uprising that killed over 60 white people before it was stopped." },
+{ cat:'dates', type:'mc', q:"When was the Mexican-American War fought?", opts:["1836–1840","1846–1848","1850–1852","1855–1857"], ans:1, exp:"The Mexican-American War was fought from 1846 to 1848. When the U.S. won, it got a large amount of new land — which immediately caused arguments about whether slavery would be allowed there." },
+{ cat:'dates', type:'mc', q:"When was the Compromise of 1850 passed?", opts:["1846","1848","1850","1852"], ans:2, exp:"The Compromise of 1850 was passed in 1850, about two years after the Mexican-American War ended. The new land from that war was a big reason why this compromise was needed." },
+{ cat:'dates', type:'mc', q:"When was Uncle Tom's Cabin published?", opts:["1850","1852","1854","1856"], ans:1, exp:"Uncle Tom's Cabin was published in 1852. Harriet Beecher Stowe wrote it right after the Fugitive Slave Act of 1850, which made her so angry she felt she had to write it." },
+{ cat:'dates', type:'mc', q:"When was the Kansas-Nebraska Act passed?", opts:["1850","1852","1854","1856"], ans:2, exp:"The Kansas-Nebraska Act was passed in 1854. It let settlers in Kansas and Nebraska vote on whether to allow slavery, which cancelled the Missouri Compromise's dividing line." },
+{ cat:'dates', type:'mc', q:"When did Bleeding Kansas happen?", opts:["1850–1852","1852–1854","1854–1859","1856–1860"], ans:2, exp:"Bleeding Kansas happened from 1854 to 1859. The violence started right after the Kansas-Nebraska Act let people vote on slavery, which caused both sides to rush into Kansas and fight." },
+{ cat:'dates', type:'mc', q:"When did the Caning of Charles Sumner happen?", opts:["1854","1855","1856","1857"], ans:2, exp:"The Caning of Charles Sumner happened in May 1856. A congressman named Preston Brooks walked into the Senate and beat Senator Sumner with a cane after Sumner's anti-slavery speech." },
+{ cat:'dates', type:'mc', q:"When was the Dred Scott Decision made?", opts:["1854","1856","1857","1858"], ans:2, exp:"The Dred Scott Decision came from the Supreme Court in 1857. It was a 7 to 2 ruling that said Black people had no rights and that Congress could not ban slavery from any territory." },
+{ cat:'dates', type:'mc', q:"When did the Lincoln-Douglas Debates happen?", opts:["1856","1857","1858","1860"], ans:2, exp:"The Lincoln-Douglas Debates happened from August to October 1858. There were 7 debates all across Illinois. Lincoln and Douglas were competing for the same Senate seat." },
+{ cat:'dates', type:'mc', q:"When was John Brown's raid on Harper's Ferry?", opts:["1857","1858","1859","1860"], ans:2, exp:"John Brown's raid on Harper's Ferry happened in 1859. Brown was caught right after the raid, put on trial, and executed later that same year." },
+{ cat:'dates', type:'mc', q:"When was Abraham Lincoln elected president?", opts:["1856","1858","1860","1861"], ans:2, exp:"Abraham Lincoln was elected president on November 6, 1860. He won all the Northern and Western states but zero Southern states. His win scared the South and led to secession." },
+{ cat:'dates', type:'mc', q:"What exact date did South Carolina leave the United States?", opts:["November 6, 1860","December 20, 1860","January 1, 1861","April 12, 1861"], ans:1, exp:"South Carolina left the United States on December 20, 1860 — about six weeks after Lincoln's election on November 6, 1860." },
+{ cat:'dates', type:'mc', q:"When was Lincoln officially sworn in as president?", opts:["November 6, 1860","December 20, 1860","January 20, 1861","March 4, 1861"], ans:3, exp:"Lincoln was officially sworn in as president on March 4, 1861. That means many Southern states had already left the Union BEFORE Lincoln even started his job." },
+{ cat:'dates', type:'mc', q:"When did Confederates attack Fort Sumter to start the Civil War?", opts:["March 4, 1861","April 12, 1861","May 1, 1861","June 15, 1861"], ans:1, exp:"Confederate forces attacked Fort Sumter on April 12, 1861. This 33-hour battle officially started the Civil War." },
+{ cat:'dates', type:'mc', q:"How many states ended up joining the Confederacy?", opts:["7","9","11","13"], ans:2, exp:"11 states joined the Confederate States of America: South Carolina, Mississippi, Florida, Alabama, Georgia, Louisiana, Texas, Virginia, Arkansas, North Carolina, and Tennessee." },
+{ cat:'dates', type:'mc', q:"How many people were killed in Nat Turner's Rebellion?", opts:["About 10 white people","About 60 white people (and about 120 Black people were killed in revenge)","About 600 people","About 5 people"], ans:1, exp:"During Nat Turner's Rebellion, over 60 white people were killed. Then, in revenge, about 120 Black people were killed — most of whom had nothing to do with the rebellion." },
+{ cat:'dates', type:'mc', q:"About how many times did Harriet Tubman go back to the South to guide people to freedom?", opts:["About 3 times","About 13 times","About 30 times","About 50 times"], ans:1, exp:"Harriet Tubman went back to the South about 13 times to guide enslaved people to freedom. She never got caught and never lost anyone she was guiding." },
+{ cat:'dates', type:'mc', q:"How many Lincoln-Douglas Debates were there?", opts:["3","5","7","10"], ans:2, exp:"There were 7 Lincoln-Douglas Debates, held all across Illinois from August to October 1858. Each debate lasted 3 hours. The big topic was whether slavery should spread to new territories." },
+{ cat:'dates', type:'mc', q:"About what percentage of the popular vote did Lincoln win in 1860?", opts:["About 29%","About 40%","About 50%","About 61%"], ans:1, exp:"Lincoln won about 40% of the popular vote in 1860. Even though he didn't get a majority, he won enough electoral votes to become president. The South refused to vote for him at all." },
+{ cat:'dates', type:'mc', q:"What was the Supreme Court vote in the Dred Scott Decision?", opts:["5-4","6-3","7-2","9-0"], ans:2, exp:"The Dred Scott Decision was a 7 to 2 vote. Seven justices ruled against Scott. Only two disagreed. Chief Justice Roger B. Taney wrote the main opinion." },
+{ cat:'dates', type:'mc', q:"Who was president RIGHT BEFORE Lincoln and is blamed for not stopping the Civil War?", opts:["Andrew Jackson","James Polk","James Buchanan","Millard Fillmore"], ans:2, exp:"James Buchanan was president from 1857 to 1861 — right before Lincoln. Most historians blame him for not doing enough to stop the country from splitting apart. He left Lincoln with a huge problem." },
+{ cat:'dates', type:'mc', q:"What political party did Abraham Lincoln belong to?", opts:["Democratic Party","Whig Party","Republican Party","Constitutional Union Party"], ans:2, exp:"Abraham Lincoln was a member of the Republican Party. The Republicans were started in the 1850s specifically to stop slavery from spreading to new territories." },
+{ cat:'dates', type:'mc', q:"What political party did Stephen Douglas belong to?", opts:["Republican Party","Northern Democratic Party","Constitutional Union Party","Whig Party"], ans:1, exp:"Stephen Douglas was part of the Northern Democratic Party in 1860. The Democratic Party had split into two groups over slavery — Douglas led the Northern half, and Breckinridge led the Southern half." },
+{ cat:'dates', type:'mc', q:"When did Harriet Tubman escape from slavery?", opts:["1840","1845","1849","1855"], ans:2, exp:"Harriet Tubman escaped from slavery in 1849. After that, she came back about 13 more times to guide other enslaved people to freedom." },
+{ cat:'people', type:'mc', q:"How many of John Brown's sons were killed during the Harper's Ferry raid?", opts:["0","1","2","3"], ans:2, exp:"Two of John Brown's sons were killed during the Harper's Ferry raid. Even though he lost two sons, Brown himself survived to be captured, put on trial, and hanged." },
+{ cat:'events', type:'mc', q:"Who stopped John Brown and captured him after the Harper's Ferry raid?", opts:["President Buchanan personally","U.S. soldiers led by Colonel Robert E. Lee","Local Virginia volunteers","Frederick Douglass turned him in"], ans:1, exp:"U.S. soldiers stopped the raid. The force was led by Colonel Robert E. Lee — the same Robert E. Lee who would later command the entire Confederate Army in the Civil War." },
+{ cat:'events', type:'mc', q:"What effect did the Caning of Sumner have on people in the North?", opts:["Northerners felt more sympathy toward the South","More Northerners joined the anti-slavery Republican Party","Northerners demanded war right away","Northerners started supporting popular sovereignty"], ans:1, exp:"The Caning of Sumner pushed more Northerners into the anti-slavery Republican Party. Seeing a senator get beaten badly just for speaking against slavery convinced many people that compromise was impossible." },
+{ cat:'events', type:'mc', q:"How did many Northerners feel about John Brown after he was executed?", opts:["Relieved the dangerous man was gone","Many saw him as a brave hero who died for freedom","They didn't really care — he was just a criminal","They demanded the South be punished for executing him"], ans:1, exp:"Many Northerners saw John Brown as a brave hero who died fighting for freedom. The South was horrified by this, since they saw Brown as a dangerous criminal. Their completely opposite reactions showed how divided the country was." },
+{ cat:'tf', type:'tf', q:"The first Southern states to leave the Union did so BEFORE Lincoln was even sworn in as president.", opts:["True","False"], ans:0, exp:"True. South Carolina and six other states left the Union between December 1860 and February 1861. Lincoln wasn't sworn in until March 4, 1861, so the Confederacy formed before he even started the job." },
+{ cat:'events', type:'mc', q:"Why could the same event in history be described very differently depending on who wrote about it?", opts:["It couldn't — facts are always the same everywhere","The same event could be called heroic in the North and horrible in the South, depending on who was writing","The government controlled all newspapers so the story was always the same","Only Southern newspapers got things wrong"], ans:1, exp:"The presentation showed this clearly. The same event — like Nat Turner's Rebellion — would be written about very differently by a Northern newspaper vs. a Southern one. Each side saw the world through its own point of view." },
+{ cat:'events', type:'mc', q:"Why did the Missouri Compromise eventually stop working?", opts:["Congress decided to cancel it on their own","New land from the Mexican-American War wasn't covered by it, and then the Kansas-Nebraska Act cancelled it completely","The Civil War ended it","The Supreme Court cancelled it in 1840"], ans:1, exp:"The Missouri Compromise stopped working for two reasons: 1) After the Mexican-American War (1846-48), the U.S. got new land that wasn't covered by the old compromise. 2) The Kansas-Nebraska Act (1854) directly cancelled it." },
+{ cat:'tf', type:'tf', q:"Abraham Lincoln won electoral votes from Southern states in the 1860 election.", opts:["True","False"], ans:1, exp:"False. Lincoln won ZERO electoral votes from Southern states. He only won votes from Northern and Western states. The South completely refused to support him, which is why they started leaving the Union." },
+{ cat:'events', type:'mc', q:"After the Fugitive Slave Act, why did Harriet Tubman take people all the way to Canada instead of stopping in the North?", opts:["Canada was closer and easier to reach","The Fugitive Slave Act said escaped people could be caught and sent back even from free Northern states","Canada had better opportunities","The Underground Railroad only went to Canada"], ans:1, exp:"The Fugitive Slave Act made it legal to catch escaped enslaved people even in free Northern states. So Canada — where U.S. law had no power — was the only place they could truly be free and safe." },
+{ cat:'tf', type:'tf', q:"The Republican Party in the 1850s was against letting slavery spread to new territories.", opts:["True","False"], ans:0, exp:"True. The Republican Party was started in the 1850s specifically to stop slavery from spreading to new territories. Abraham Lincoln ran as a Republican and shared this position." },
+{ cat:'tf', type:'tf', q:"'Border Ruffians' were pro-slavery people from Missouri who crossed into Kansas to vote illegally.", opts:["True","False"], ans:0, exp:"True. Border Ruffians were pro-slavery people from Missouri who crossed into Kansas just to vote for slavery, even though they didn't live there. Their cheating helped trigger the violent fighting called Bleeding Kansas." },
+{ cat:'tf', type:'tf', q:"The Wilmot Proviso became a law.", opts:["True","False"], ans:1, exp:"False. The Wilmot Proviso NEVER became a law. It passed the House of Representatives but failed in the Senate. Even though it didn't pass, it caused huge arguments between the North and South." },
+{ cat:'tf', type:'tf', q:"After John Brown was executed, many Northerners saw him as a hero.", opts:["True","False"], ans:0, exp:"True. After John Brown was hanged in December 1859, many Northerners came to see him as a hero who died fighting for freedom. The South saw him as a dangerous criminal. Their opposite reactions showed how divided the country was." },
+{ cat:'tf', type:'tf', q:"The Lincoln-Douglas Debates were about whether Kansas should become a state.", opts:["True","False"], ans:1, exp:"False. The debates were about whether slavery should SPREAD into new territories. Kansas was mentioned as one example, but the bigger question was about the future of slavery in America." },
+{ cat:'events', type:'mc', q:"What did the Republicans stand for in the 1850s?", opts:["Pro-slavery — they wanted it everywhere","No position — they were neutral","They were against letting slavery spread to new territories","They wanted to end all slavery right away"], ans:2, exp:"The Republican Party was formed in the 1850s to stop slavery from spreading into new territories. Most Republicans (including Lincoln) did not call for ending slavery where it already existed — just stopping it from spreading." },
+{ cat:'people', type:'mc', q:"What good thing did the Lincoln-Douglas Debates do for Lincoln, even though he lost?", opts:["He proved he was weak and indecisive","He became famous all over the country and was seen as a great debater","He showed he supported popular sovereignty","He gained support from Southern states"], ans:1, exp:"The debates made Lincoln nationally famous, even though he lost the Senate seat to Douglas. People saw he was a clear thinker and great speaker. That fame directly helped him win the presidential election in 1860." },
+{ cat:'events', type:'mc', q:"What were the Lincoln-Douglas Debates mostly about?", opts:["Whether to go to war with Britain","Whether California should be split into two states","Whether slavery should be allowed to spread to new territories","Whether to build a railroad to the Pacific Ocean"], ans:2, exp:"The big topic in the Lincoln-Douglas Debates was whether slavery should be allowed to spread into new territories. Lincoln said no; Douglas said the people in each territory should vote on it themselves." },
+{ cat:'people', type:'mc', q:"What happened to Dred Scott after the Supreme Court ruled against him?", opts:["He stayed enslaved for the rest of his life","He was bought by a new owner and freed in 1857","He escaped to Canada on the Underground Railroad","He was sold to a plantation in the Deep South"], ans:1, exp:"After the Supreme Court ruled against him, Dred Scott was bought by a new owner who freed him in 1857. He worked as a hotel porter in St. Louis, but sadly died just over a year after gaining his freedom." },
+{ cat:'events', type:'mc', q:"Why did Stephen Douglas write the Kansas-Nebraska Act?", opts:["To end slavery in the West forever","To allow a railroad to be built all the way across the country","To punish the South for supporting slavery","To make the Missouri Compromise stronger"], ans:1, exp:"Douglas mainly wrote the Kansas-Nebraska Act because he wanted to build a railroad across the whole country. To get Southern senators to support his railroad plan, he included the popular sovereignty rule on slavery." },
+{ cat:'events', type:'mc', q:"What did pro-slavery forces destroy when they attacked Lawrence, Kansas?", opts:["The town's courthouse","The printing presses of anti-slavery newspapers","The town's food supply","The homes of Black residents"], ans:1, exp:"During the Sacking of Lawrence (1856), pro-slavery forces destroyed the printing presses of anti-slavery newspapers, burned buildings, and raided the town. They wanted to silence the people who were speaking out against slavery." },
+{ cat:'people', type:'mc', q:"Who was Nat Turner before he led the rebellion?", opts:["A free Black man working as a farmer","An enslaved man who could read and write, and who preached the Bible to other enslaved people","A Northern abolitionist who moved to Virginia","A person who guided others on the Underground Railroad"], ans:1, exp:"Nat Turner was unusual because he was enslaved but could read and write — very rare at the time, and even illegal in many places. He preached the Bible to other enslaved people, which gave him great influence over them." },
+];
+
+
+// ═══════════════════════════════════════════════════════════════════
+// GLOBAL STATE
+// ═══════════════════════════════════════════════════════════════════
+let totalCorrect=0, totalWrong=0, streak=0, totalAnswered=0;
+let currentMode='all', currentQ=[], qIdx=0, qAnswered=false;
+let roundCorrect=0, missedQs=[];
+
+function updateScoreBar(){
+  document.getElementById('sc-correct').textContent=totalCorrect;
+  document.getElementById('sc-wrong').textContent=totalWrong;
+  document.getElementById('sc-streak').textContent=streak;
+  document.getElementById('sc-total').textContent=totalAnswered;
+}
+function shuffle(a){return a.slice().sort(()=>Math.random()-.5);}
+
+// ═══════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════
+function goHome(){
+  document.getElementById('mode-picker').style.display='block';
+  document.getElementById('quiz-wrap').classList.remove('active');
+  document.getElementById('round-complete').classList.remove('show');
+}
+
+function startMode(mode){
+  currentMode=mode;
+  let pool=[];
+  if(mode==='all') pool=BANK;
+  else if(mode==='kahoot') pool=BANK.filter(q=>q.cat==='kahoot');
+  else if(mode==='events') pool=BANK.filter(q=>q.cat==='events');
+  else if(mode==='people') pool=BANK.filter(q=>q.cat==='people');
+  else if(mode==='tf') pool=BANK.filter(q=>q.type==='tf');
+  else if(mode==='dates') pool=BANK.filter(q=>q.cat==='dates');
+
+  const n=Math.min(30,pool.length);
+  currentQ=shuffle(pool).slice(0,n).map(q=>{
+    // shuffle answer options
+    const mapped=q.opts.map((o,i)=>({text:o,orig:i}));
+    const sh=shuffle(mapped);
+    const newAns=sh.findIndex(x=>x.orig===q.ans);
+    return {...q, shuffledOpts:sh.map(x=>x.text), shuffledAns:newAns};
+  });
+  qIdx=0; roundCorrect=0; missedQs=[];
+
+  const titles={all:'All Topics Mix 🎲',kahoot:"Teacher's Kahoot 🟢",events:'Key Events 📜',people:'People & Figures 👤',tf:'True / False ✅',dates:'Dates & Facts 📅'};
+  document.getElementById('mode-title').textContent=titles[mode]||'Practice Quiz';
+
+  document.getElementById('mode-picker').style.display='none';
+  document.getElementById('round-complete').classList.remove('show');
+  document.getElementById('quiz-wrap').classList.add('active');
+  renderQ();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER QUESTION
+// ═══════════════════════════════════════════════════════════════════
+function renderQ(){
+  const q=currentQ[qIdx];
+  const total=currentQ.length;
+  const pct=Math.round((qIdx/total)*100);
+  document.getElementById('prog-bar').style.width=pct+'%';
+  document.getElementById('prog-label').textContent=`Question ${qIdx+1} of ${total}`;
+
+  const catLabels={kahoot:"🟢 Kahoot Question",events:"📜 Key Events",people:"👤 People & Figures",tf:"✅ True / False",dates:"📅 Dates & Facts"};
+  document.getElementById('q-cat').textContent=catLabels[q.cat]||'';
+  document.getElementById('q-text').textContent=q.q;
+
+  const fb=document.getElementById('feedback');
+  fb.className='feedback-box'; fb.textContent='';
+  document.getElementById('next-btn').style.display='none';
+  qAnswered=false;
+
+  const area=document.getElementById('options-area');
+  area.innerHTML='';
+  const grid=document.createElement('div');
+  grid.className=q.type==='tf'?'tf-grid':'mc-grid';
+  q.shuffledOpts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.textContent=opt;
+    btn.onclick=()=>answer(i,q,btn,grid);
+    grid.appendChild(btn);
+  });
+  area.appendChild(grid);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ANSWER
+// ═══════════════════════════════════════════════════════════════════
+function answer(chosen, q, btn, grid){
+  if(qAnswered)return;
+  qAnswered=true;
+  const correct=chosen===q.shuffledAns;
+  totalAnswered++;
+  if(correct){totalCorrect++;streak++;roundCorrect++;}
+  else{totalWrong++;streak=0;missedQs.push(q.q);}
+  updateScoreBar();
+
+  Array.from(grid.children).forEach(b=>b.disabled=true);
+  if(correct){
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    Array.from(grid.children)[q.shuffledAns].classList.add('correct');
+  }
+
+  const fb=document.getElementById('feedback');
+  fb.className=`feedback-box ${correct?'correct':'wrong'} show`;
+  fb.innerHTML=`<strong>${correct?'✅ Correct!':'❌ Not quite.'}</strong> ${q.exp}`;
+  document.getElementById('next-btn').style.display='inline-block';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// NEXT
+// ═══════════════════════════════════════════════════════════════════
+function nextQ(){
+  qIdx++;
+  if(qIdx>=currentQ.length){
+    showRoundComplete();
+    return;
+  }
+  renderQ();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ROUND COMPLETE
+// ═══════════════════════════════════════════════════════════════════
+function showRoundComplete(){
+  document.getElementById('quiz-wrap').classList.remove('active');
+  const rc=document.getElementById('round-complete');
+  rc.classList.add('show');
+  const total=currentQ.length;
+  const pct=Math.round((roundCorrect/total)*100);
+  const stars=pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':pct>=50?'⭐':'📚';
+  const title=pct>=90?'Excellent!':pct>=70?'Good Work!':pct>=50?'Keep Practicing!':'Study More!';
+  document.getElementById('rc-stars').textContent=stars;
+  document.getElementById('rc-title').textContent=title;
+  document.getElementById('rc-score').textContent=`${roundCorrect} out of ${total} correct (${pct}%)`;
+
+  const missedEl=document.getElementById('rc-missed');
+  const missedItems=document.getElementById('rc-missed-items');
+  missedItems.innerHTML='';
+  if(missedQs.length>0){
+    missedEl.style.display='block';
+    missedQs.forEach(q=>{
+      const d=document.createElement('div');
+      d.className='missed-item';
+      d.textContent='• '+q;
+      missedItems.appendChild(d);
+    });
+  } else {
+    missedEl.style.display='none';
+  }
+}
+</script>
+</body>
+</html>
